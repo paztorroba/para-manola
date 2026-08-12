@@ -1,259 +1,1006 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Para Manola ✿</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; font-family: 'Playfair Display', serif; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>Italia 2026</title>
+<style>
+:root {
+  --black: #0A0A0A;
+  --white: #FFFFFF;
+  --gray-100: #F5F5F5;
+  --gray-200: #E8E8E8;
+  --gray-300: #D0D0D0;
+  --gray-500: #888888;
+  --gray-700: #444444;
+  --nav-h: 60px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --font: -apple-system, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html { height: 100%; }
+body { font-family: var(--font); background: var(--white); color: var(--black); height: 100%; overflow: hidden; -webkit-font-smoothing: antialiased; }
 
-    #screen1 {
-      background: #8B1A1A;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 40px 32px;
-      transition: opacity 0.6s ease;
-    }
-    #screen1.fade-out { opacity: 0; pointer-events: none; }
+/* ── APP SHELL ── */
+#app { display: flex; flex-direction: column; height: 100vh; height: 100dvh; }
 
-    .s1-flower { font-size: 26px; color: #F9D7D4; margin-bottom: 22px; }
+/* ── TOP BAR ── */
+.top-bar {
+  flex-shrink: 0;
+  padding: calc(var(--safe-top) + 14px) 20px 14px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--white);
+  border-bottom: 1px solid var(--gray-200);
+  position: relative; z-index: 10;
+}
+.top-bar-left h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
+.top-bar-left p { font-size: 12px; color: var(--gray-500); margin-top: 1px; }
+.top-bar-right { display: flex; align-items: center; gap: 10px; }
+.sync-pill { display: flex; align-items: center; gap: 5px; background: var(--gray-100); border-radius: 20px; padding: 5px 10px; }
+.sync-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gray-300); transition: background .3s; }
+.sync-dot.ok { background: #22C55E; }
+.sync-dot.err { background: #EF4444; }
+.sync-label { font-size: 11px; color: var(--gray-500); }
+.cal-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--black); color: var(--white); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; }
 
-    .s1-name {
-      font-family: 'IM Fell English', serif;
-      font-style: italic;
-      font-size: clamp(22px, 5vw, 30px);
-      color: #F9D7D4;
-      opacity: 0.85;
-      margin-bottom: 14px;
-    }
+/* ── MAIN CONTENT ── */
+.main { flex: 1; overflow: hidden; position: relative; }
 
-    .s1-title {
-      font-family: 'Playfair Display', serif;
-      font-weight: 900;
-      font-size: clamp(36px, 9vw, 68px);
-      color: #F9D7D4;
-      line-height: 1.08;
-      margin-bottom: 52px;
-      max-width: 640px;
-    }
+/* ── DAY CAROUSEL ── */
+#carousel-wrap {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+}
+.carousel-nav {
+  flex-shrink: 0;
+  display: flex; align-items: center; gap: 0;
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; padding: 12px 16px;
+  border-bottom: 1px solid var(--gray-200);
+  gap: 6px;
+}
+.carousel-nav::-webkit-scrollbar { display: none; }
+.day-pill {
+  flex-shrink: 0; padding: 7px 14px;
+  border-radius: 20px; border: 1.5px solid var(--gray-200);
+  background: var(--white); cursor: pointer;
+  font-size: 12px; font-weight: 500; color: var(--gray-500);
+  transition: all .15s; white-space: nowrap;
+  font-family: var(--font);
+}
+.day-pill.active {
+  background: var(--black); border-color: var(--black);
+  color: var(--white);
+}
+.day-pill.today { border-color: var(--black); color: var(--black); }
 
-    .s1-btn {
-      background: #F9D7D4;
-      color: #8B1A1A;
-      border: none;
-      border-radius: 50px;
-      padding: 18px 52px;
-      font-family: 'Playfair Display', serif;
-      font-weight: 700;
-      font-size: 18px;
-      cursor: pointer;
-      letter-spacing: 0.04em;
-      transition: transform 0.15s ease, background 0.15s ease;
-    }
-    .s1-btn:hover { transform: scale(1.04); background: #fff; }
+/* ── SWIPE CONTAINER ── */
+.swipe-container {
+  flex: 1; overflow: hidden; position: relative;
+}
+.swipe-track {
+  display: flex; height: 100%;
+  transition: transform .3s cubic-bezier(.4,0,.2,1);
+  will-change: transform;
+}
+.day-card {
+  flex-shrink: 0; width: 100%; height: 100%;
+  overflow-y: auto; -webkit-overflow-scrolling: touch;
+  padding-bottom: calc(var(--nav-h) + var(--safe-bottom) + 16px);
+}
 
-    #screen2 {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      background: #F0CCCA;
-      min-height: 100vh;
-      padding: 44px 20px 60px;
-      position: relative;
-    }
-    #screen2.visible { display: flex; }
+/* ── DAY HERO ── */
+.day-hero {
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid var(--gray-200);
+  position: relative;
+}
+.day-hero-top { display: flex; align-items: flex-start; justify-content: space-between; }
+.day-label { font-size: 11px; font-weight: 600; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+.day-title { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; line-height: 1.15; }
+.day-date-badge {
+  background: var(--black); color: var(--white);
+  border-radius: 10px; padding: 6px 10px; text-align: center;
+  flex-shrink: 0; margin-left: 12px;
+}
+.day-date-badge .badge-day { font-size: 18px; font-weight: 700; line-height: 1; }
+.day-date-badge .badge-month { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.7; margin-top: 1px; }
+.day-hero-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.meta-chip {
+  display: flex; align-items: center; gap: 5px;
+  background: var(--gray-100); border-radius: 20px;
+  padding: 5px 10px; font-size: 12px; color: var(--gray-700);
+}
+.meta-chip .chip-icon { font-size: 13px; }
+.today-badge {
+  display: inline-block; background: var(--black); color: var(--white);
+  font-size: 10px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.08em; padding: 3px 8px; border-radius: 20px;
+  margin-left: 8px; vertical-align: middle;
+}
+.done-btn-hero {
+  position: absolute; bottom: 16px; right: 20px;
+  background: none; border: 1.5px solid var(--gray-300);
+  border-radius: 20px; padding: 6px 14px; font-size: 12px;
+  font-weight: 500; color: var(--gray-500); cursor: pointer;
+  font-family: var(--font); transition: all .15s;
+}
+.done-btn-hero.done { background: var(--black); border-color: var(--black); color: var(--white); }
 
-    #sparkle-canvas {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      pointer-events: none;
-      z-index: 999;
-    }
+/* ── SECTIONS ── */
+.day-section { padding: 16px 20px; border-bottom: 1px solid var(--gray-200); }
+.day-section:last-child { border-bottom: none; }
+.section-label {
+  font-size: 10px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--gray-500); margin-bottom: 10px;
+}
 
-    .main-img {
-      width: 100%;
-      max-width: 440px;
-      border-radius: 18px;
-      display: block;
-      margin-bottom: 32px;
-      box-shadow: 0 8px 32px rgba(139,26,26,0.15);
-      opacity: 0;
-      transform: scale(0.94);
-      transition: opacity 0.7s ease 0.1s, transform 0.7s ease 0.1s;
-    }
-    .main-img.appeared { opacity: 1; transform: scale(1); }
+/* ── ACTIVITIES ── */
+.activity-list { display: flex; flex-direction: column; gap: 8px; }
+.activity-item { display: flex; align-items: flex-start; gap: 10px; }
+.activity-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--black); margin-top: 7px; flex-shrink: 0; }
+.activity-text { font-size: 14px; line-height: 1.5; color: var(--black); }
 
-    .spotify-block { width: 100%; max-width: 440px; }
+/* ── TRANSPORT ── */
+.transport-card {
+  background: var(--gray-100); border-radius: 12px;
+  padding: 12px 14px; display: flex; align-items: flex-start; gap: 10px;
+}
+.transport-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.transport-text { font-size: 13px; line-height: 1.5; color: var(--gray-700); }
 
-    .spotify-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      width: 100%;
-      background: #8B1A1A;
-      color: #F9D7D4;
-      border: none;
-      border-radius: 50px;
-      padding: 18px 28px;
-      font-family: 'Playfair Display', serif;
-      font-weight: 700;
-      font-size: 16px;
-      letter-spacing: 0.04em;
-      cursor: pointer;
-      transition: transform 0.15s ease, background 0.15s ease;
-    }
-    .spotify-btn:hover { transform: scale(1.02); background: #6e1414; }
-    .spotify-btn svg { flex-shrink: 0; }
+/* ── MAP ── */
+.map-section { padding: 16px 20px; }
+.map-section .section-label { margin-bottom: 10px; }
+#day-map-container { position: relative; }
+.day-map {
+  width: 100%; height: 220px; border-radius: 14px;
+  overflow: hidden; border: 1px solid var(--gray-200);
+  background: var(--gray-100);
+}
+.map-loading {
+  position: absolute; inset: 0; display: flex;
+  align-items: center; justify-content: center;
+  background: var(--gray-100); border-radius: 14px;
+  font-size: 13px; color: var(--gray-500);
+}
+.open-maps-btn {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  width: 100%; margin-top: 10px; padding: 12px;
+  background: var(--black); color: var(--white); border: none;
+  border-radius: 12px; font-size: 14px; font-weight: 500;
+  cursor: pointer; font-family: var(--font); text-decoration: none;
+}
+.map-places { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+.map-place-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 12px; background: var(--gray-100); border-radius: 10px;
+}
+.map-place-num {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--black); color: var(--white);
+  font-size: 10px; font-weight: 700; display: flex;
+  align-items: center; justify-content: center; flex-shrink: 0;
+}
+.map-place-name { font-size: 12px; color: var(--gray-700); flex: 1; }
 
-    .spotify-embed { width: 100%; margin-top: 14px; display: none; }
-    .spotify-embed.open { display: block; }
-    .spotify-embed iframe { width: 100%; border-radius: 14px; border: none; }
-  </style>
+/* ── SWAP SECTION ── */
+.swap-section { padding: 16px 20px; }
+.swap-btn {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; padding: 13px; border: 1.5px dashed var(--gray-300);
+  border-radius: 12px; background: none; font-size: 14px;
+  color: var(--gray-500); cursor: pointer; font-family: var(--font);
+  transition: all .15s;
+}
+.swap-btn:active { background: var(--gray-100); }
+.edit-btn-section {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; padding: 13px; border: 1.5px solid var(--gray-200);
+  border-radius: 12px; background: none; font-size: 14px;
+  color: var(--black); cursor: pointer; font-family: var(--font);
+  transition: all .15s; margin-top: 8px;
+}
+.edit-btn-section:active { background: var(--gray-100); }
+
+/* ── CALENDAR OVERLAY ── */
+.cal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5); z-index: 100;
+  align-items: flex-end; justify-content: center;
+}
+.cal-overlay.open { display: flex; }
+.cal-sheet {
+  background: var(--white); border-radius: 20px 20px 0 0;
+  width: 100%; max-height: 80vh; overflow-y: auto;
+  padding: 16px 20px calc(24px + var(--safe-bottom));
+}
+.cal-handle { width: 36px; height: 4px; background: var(--gray-300); border-radius: 2px; margin: 0 auto 16px; }
+.cal-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; }
+
+/* Month block */
+.cal-month { margin-bottom: 24px; }
+.cal-month-name {
+  font-size: 13px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--black); margin-bottom: 10px;
+}
+.cal-weekdays {
+  display: grid; grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 4px;
+}
+.cal-weekday {
+  text-align: center; font-size: 11px; font-weight: 600;
+  color: var(--gray-500); padding-bottom: 6px;
+}
+.cal-grid {
+  display: grid; grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+.cal-cell {
+  aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+  border-radius: 50%; font-size: 14px; font-weight: 500;
+  cursor: default; color: var(--gray-300); position: relative;
+  font-family: var(--font);
+}
+.cal-cell.in-trip {
+  color: var(--black); cursor: pointer;
+  border-radius: 50%; transition: background .12s;
+}
+.cal-cell.in-trip:active { background: var(--gray-200); }
+.cal-cell.is-current {
+  background: var(--black); color: var(--white) !important;
+  border-radius: 50%;
+}
+.cal-cell.is-today:not(.is-current) {
+  border: 2px solid var(--black);
+}
+/* City color dot under the date */
+.cal-cell .city-dot {
+  position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%);
+  width: 4px; height: 4px; border-radius: 50%;
+}
+.cal-legend { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.cal-legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--gray-700); }
+.cal-legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── MODAL: Edit / Swap ── */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5); z-index: 200;
+  align-items: flex-end; justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal-sheet {
+  background: var(--white); border-radius: 20px 20px 0 0;
+  width: 100%; max-height: 90vh; overflow-y: auto;
+  padding: 20px 20px calc(20px + var(--safe-bottom));
+}
+.modal-handle { width: 36px; height: 4px; background: var(--gray-300); border-radius: 2px; margin: 0 auto 18px; }
+.modal-title { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 18px; }
+.field { margin-bottom: 14px; }
+.field label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gray-500); display: block; margin-bottom: 6px; }
+.field input, .field select, .field textarea {
+  width: 100%; padding: 12px 14px;
+  border: 1.5px solid var(--gray-200); border-radius: 12px;
+  background: var(--white); color: var(--black);
+  font-size: 15px; font-family: var(--font); outline: none;
+  -webkit-appearance: none;
+}
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--black); }
+.field textarea { resize: vertical; min-height: 100px; line-height: 1.5; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.modal-actions { display: flex; gap: 10px; margin-top: 18px; }
+.btn { padding: 14px 18px; border-radius: 14px; border: none; cursor: pointer; font-size: 15px; font-family: var(--font); font-weight: 600; flex: 1; transition: all .15s; }
+.btn-black { background: var(--black); color: var(--white); }
+.btn-gray { background: var(--gray-100); color: var(--black); }
+
+/* ── SWAP MODAL ── */
+.swap-day-list { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+.swap-day-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px; border: 1.5px solid var(--gray-200);
+  border-radius: 14px; cursor: pointer; transition: all .15s;
+  background: var(--white);
+}
+.swap-day-item:active { background: var(--gray-100); }
+.swap-day-item.selected { border-color: var(--black); background: var(--gray-100); }
+.swap-day-item.disabled { opacity: 0.35; pointer-events: none; }
+.swap-day-date { font-size: 13px; font-weight: 700; flex-shrink: 0; width: 44px; }
+.swap-day-name { font-size: 13px; color: var(--gray-700); flex: 1; }
+.swap-day-check { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--gray-300); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; }
+.swap-day-item.selected .swap-day-check { background: var(--black); border-color: var(--black); color: var(--white); }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: calc(var(--nav-h) + var(--safe-bottom) + 12px);
+  left: 50%; transform: translateX(-50%) translateY(16px);
+  background: var(--black); color: var(--white);
+  padding: 11px 20px; border-radius: 24px; font-size: 13px; font-weight: 500;
+  opacity: 0; transition: all .3s; z-index: 300; white-space: nowrap; pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ── LOADING ── */
+.loading-screen {
+  position: fixed; inset: 0; background: var(--white);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  z-index: 999; gap: 16px;
+}
+.loading-title { font-size: 24px; font-weight: 700; }
+.loading-sub { font-size: 14px; color: var(--gray-500); }
+.spinner { width: 24px; height: 24px; border: 2.5px solid var(--gray-200); border-top-color: var(--black); border-radius: 50%; animation: spin .7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
 </head>
 <body>
 
-<div id="screen1">
-  <div class="s1-flower">✿</div>
-  <p class="s1-name">Manola,</p>
-  <h1 class="s1-title">ya casi llega el finde que estabas esperando.</h1>
-  <button class="s1-btn" onclick="openCard()">Abrir 🎀</button>
+<div class="loading-screen" id="loading">
+  <div class="loading-title">Italia 2026 ✈️</div>
+  <div class="spinner"></div>
+  <div class="loading-sub">Cargando itinerario...</div>
 </div>
 
-<div id="screen2">
-  <canvas id="sparkle-canvas"></canvas>
-  <img class="main-img" id="main-img" src="weekend_essentials_manu.png" alt="Weekend Essentials para Manola"/>
-  <div class="spotify-block">
-    <button class="spotify-btn" onclick="toggleSpotify(this)">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M9 18V5l12-2v13" stroke="#F9D7D4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="6" cy="18" r="3" stroke="#F9D7D4" stroke-width="1.8"/>
-        <circle cx="18" cy="16" r="3" stroke="#F9D7D4" stroke-width="1.8"/>
-      </svg>
-      Tocá acá para ir entrando en mood
-    </button>
-    <div class="spotify-embed" id="spotify-embed">
-      <iframe
-        src="https://open.spotify.com/embed/playlist/2lCCBicViLXrNWDG51Hfwb?utm_source=generator&theme=0"
-        height="352"
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        loading="lazy">
-      </iframe>
+<div id="app" style="display:none">
+  <div class="top-bar">
+    <div class="top-bar-left">
+      <h1>Italia 2026 ✈️</h1>
+      <p>15 ago — 7 sep · 24 noches</p>
+    </div>
+    <div class="top-bar-right">
+      <div class="sync-pill">
+        <div class="sync-dot" id="sync-dot"></div>
+        <span class="sync-label" id="sync-label">...</span>
+      </div>
+      <button class="cal-btn" onclick="openCal()" aria-label="Calendario">📅</button>
+    </div>
+  </div>
+
+  <div class="main">
+    <div id="carousel-wrap">
+      <div class="carousel-nav" id="carousel-nav"></div>
+      <div class="swipe-container" id="swipe-container">
+        <div class="swipe-track" id="swipe-track"></div>
+      </div>
     </div>
   </div>
 </div>
 
+<!-- CALENDAR OVERLAY -->
+<div class="cal-overlay" id="cal-overlay" onclick="if(event.target===this)closeCal()">
+  <div class="cal-sheet">
+    <div class="cal-handle"></div>
+    <div class="cal-title">Ir a un día</div>
+    <div id="cal-content"></div>
+  </div>
+</div>
+
+<!-- MODAL: Edit Day -->
+<div class="modal-overlay" id="modal-edit" onclick="if(event.target===this)closeModal('modal-edit')">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Editar día</div>
+    <input type="hidden" id="edit-idx">
+    <div class="field"><label>Destino / Plan principal</label><input type="text" id="edit-ciudad"></div>
+    <div class="field-row">
+      <div class="field"><label>Check-in</label><input type="text" id="edit-checkin" placeholder="3pm"></div>
+      <div class="field"><label>Transporte</label><input type="text" id="edit-transport" placeholder="Tren local"></div>
+    </div>
+    <div class="field"><label>Actividades del día</label><textarea id="edit-actividades" rows="5"></textarea></div>
+    <div class="field"><label>⚠️ Nota / Pendiente</label><input type="text" id="edit-pendiente" placeholder="Algo a recordar..."></div>
+    <div class="modal-actions">
+      <button class="btn btn-gray" onclick="closeModal('modal-edit')">Cancelar</button>
+      <button class="btn btn-black" onclick="saveEdit()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Swap -->
+<div class="modal-overlay" id="modal-swap" onclick="if(event.target===this)closeModal('modal-swap')">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="swap-title">Intercambiar con...</div>
+    <p style="font-size:13px;color:var(--gray-500);margin-bottom:16px">Elegí otro día de la misma ciudad para intercambiar los planes</p>
+    <div class="swap-day-list" id="swap-day-list"></div>
+    <div class="modal-actions" style="margin-top:20px">
+      <button class="btn btn-gray" onclick="closeModal('modal-swap')">Cancelar</button>
+      <button class="btn btn-black" onclick="confirmSwap()" id="swap-confirm-btn">Intercambiar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
 <script>
-  function openCard() {
-    const s1 = document.getElementById('screen1');
-    const s2 = document.getElementById('screen2');
-    s1.classList.add('fade-out');
-    setTimeout(() => {
-      s1.style.display = 'none';
-      s2.classList.add('visible');
-      window.scrollTo(0, 0);
-      const img = document.getElementById('main-img');
-      requestAnimationFrame(() => requestAnimationFrame(() => img.classList.add('appeared')));
-      setTimeout(launchSparkles, 350);
-    }, 600);
+// ── FIREBASE CONFIG ──
+const FIREBASE_URL = 'https://italia-2026-ac0e8-default-rtdb.firebaseio.com';
+const MAPS_KEY = 'AIzaSyC34Kipi5khajrswyx7rNnuwSGQ_ywyxyg';
+
+// ── DEFAULT DATA ──
+const DEFAULT_DAYS = [
+  {fecha:'15-08',dia:'Sáb',ciudad:'Buenos Aires → Palermo',seccion:'Vuelo',checkin:'21:20hs',transport:'ITA Airways · Vuelo a Roma (12:50hs) + Palermo (1:10hs)',actividades:'Salida 21:20hs · Llegada Roma 18:40hs → Palermo 22:30hs · Mochila + Carry On',pendiente:'Vuelo Internacional: ITA 21:20',locked:true,places:[]},
+  {fecha:'16-08',dia:'Dom',ciudad:'Palermo',seccion:'Palermo',checkin:'1pm',transport:'-',actividades:'10:30 Palazzo dei Normanni y Cappella Palatina\nMañana: Centro Histórico — Quattro Canti, Piazza Pretoria, Chiesa della Martorana, Catedral\nAlmuerzo en Mercato di Ballarò o Mercato del Capo\nTarde: Teatro Massimo, Via Maqueda\nCena: zona Piazza San Domenico o Kalsa',pendiente:'',locked:false,places:['Palazzo dei Normanni, Palermo','Quattro Canti, Palermo','Mercato di Ballarò, Palermo','Teatro Massimo, Palermo','Piazza San Domenico, Palermo']},
+  {fecha:'17-08',dia:'Lun',ciudad:'Palermo / Mondello',seccion:'Palermo',checkin:'-',transport:'Colectivo Línea 806 (30–40 min)',actividades:'Ir temprano a la playa\nAlquilar sombrilla o tumbona\nAlmorzar ahí\nOpcional: Riserva Naturale Capo Gallo',pendiente:'',locked:false,places:['Mondello Beach, Palermo','Riserva Naturale Capo Gallo, Palermo']},
+  {fecha:'18-08',dia:'Mar',ciudad:'Cefalù',seccion:'Palermo',checkin:'-',transport:'Tren Palermo → Cefalù (1hs)',actividades:'Mañana: Subir la Roca (~2hs)\nAlmuerzo en centro ciudad\nTarde: playa + Cefalù Cathedral + Casco histórico + Puerto viejo + Lavatoio Medievale + Callejuelas',pendiente:'',locked:false,places:['La Rocca, Cefalù','Cattedrale di Cefalù','Lavatoio Medievale, Cefalù','Porto di Cefalù']},
+  {fecha:'19-08',dia:'Mié',ciudad:'Palermo / Porticello',seccion:'Palermo',checkin:'-',transport:'Tren Palermo → Santa Flavia (20m + 25m a pie)',actividades:'Mañana: Porticello, playa y posible Trekking Parco Monte Catalfano\nAlmuerzo: Puerto de Porticello\nTarde: Forum Palermo Shopping (cierra 9pm)',pendiente:'',locked:false,places:['Porticello, Santa Flavia','Parco Monte Catalfano, Bagheria','Forum Palermo']},
+  {fecha:'20-08',dia:'Jue',ciudad:'Agrigento',seccion:'Agrigento',checkin:'3pm',transport:'Tren + Bus matutino 10:32–13:55',actividades:'Mediodía: Almuerzo + check-in\nTarde: Stair of the Turks (sacar entradas ahí)\nTransporte: Temple Tour Bus o taxi',pendiente:'Tren confirmado · Codice: 2877459606 y 2877459607',locked:true,places:['Scala dei Turchi, Realmonte','Agrigento centro']},
+  {fecha:'21-08',dia:'Vie',ciudad:'Agrigento',seccion:'Agrigento',checkin:'-',transport:'-',actividades:'Mañana: Punta Bianca / recorrer ciudad\nTarde + atardecer: Valle dei Templi (entrada 16:30hs)',pendiente:'Entrada Valle dei Templi confirmada · Cod: DWD5BDWH',locked:false,places:['Punta Bianca, Agrigento','Valle dei Templi, Agrigento']},
+  {fecha:'22-08',dia:'Sáb',ciudad:'Catania',seccion:'Catania',checkin:'3pm',transport:'Tren + Bus matutino 13:15–17:30hs',actividades:'Mañana: Agrigento pendientes\nTarde: Piazza del Duomo, Fontana dell\'Elefante, Via Etnea, Piazza Università, Via Crociferi',pendiente:'Tren confirmado · Codice: 2877460334 y 2877460335',locked:true,places:['Piazza del Duomo, Catania','Via Etnea, Catania','Via Crociferi, Catania']},
+  {fecha:'23-08',dia:'Dom',ciudad:'Noto / Siracusa',seccion:'Catania',checkin:'-',transport:'2hs Catania→Noto · 35min Noto→Siracusa · 1:10hs Siracusa→Catania',actividades:'Ir a Noto primero: Porta Reale, Corso Vittorio Emanuele, Cattedrale di San Nicolò, Via Corrado Nicolaci\nDespués Siracusa/Ortigia: Tempio di Apollo, Piazza Archimede, Piazza Duomo, Fonte Aretusa, Castello Maniace',pendiente:'',locked:false,places:['Cattedrale di Noto','Via Corrado Nicolaci, Noto','Tempio di Apollo, Siracusa','Piazza Duomo, Ortigia, Siracusa','Fonte Aretusa, Siracusa']},
+  {fecha:'24-08',dia:'Lun',ciudad:'Etna / Catania',seccion:'Catania',checkin:'-',transport:'Confirmar tour y punto de encuentro',actividades:'Tour GetYourGuide Etna · Booking ref: GYG83XAK43M7\nTarde/Noche: descansar y comer tranqui',pendiente:'Tour Etna confirmado',locked:false,places:['Mount Etna, Sicily','Nicolosi, Catania']},
+  {fecha:'25-08',dia:'Mar',ciudad:'Taormina',seccion:'Catania',checkin:'-',transport:'Catania → Taormina (1hs)',actividades:'Mañana: Porta Messina, Corso Umberto, Piazza IX Aprile, Torre dell\'Orologio, Piazza Duomo\nAlmuerzo: Bam Bar\nTarde: Isola Bella\nTardecita: Teatro Antico (18:30hs) 🎂 Cumple de mamá!',pendiente:'Teatro Antico confirmado · #TOL-2026-00028033',locked:false,places:['Teatro Antico di Taormina','Piazza IX Aprile, Taormina','Isola Bella, Taormina','Bam Bar, Taormina']},
+  {fecha:'26-08',dia:'Mié',ciudad:'Catania',seccion:'Catania',checkin:'Tren nocturno',transport:'Tren nocturno 10:58pm → 6:42am · PNR WLSQE5 · Vagón 3, asientos 41 y 45',actividades:'Mañana: Mercado La Pescheria (ir a primera hora), Piazza Duomo, Fontana dell\'Amenano, Via Gisira\nTarde: Via Crociferi, Villa Cerami, Piazza Stesicoro\nTardecita: Shopping productos sicilianos (pistacho)\nNoche: cena y tren nocturno',pendiente:'Tren nocturno confirmado · PNR WLSQE5',locked:true,places:['Mercato della Pescheria, Catania','Piazza Stesicoro, Catania']},
+  {fecha:'27-08',dia:'Jue',ciudad:'Salerno + Vetri Sul Mare → Atrani',seccion:'Amalfi',checkin:'3pm–8pm',transport:'Ferry Salerno → Atrani · Horarios: 11:40 / 14:10 / 15:30 / 17:10',actividades:'Mañana: Bounce/Stasher para equipaje\nRecorrer Salerno: Lungomare Trieste, Centro histórico, Via Mercanti, Duomo di Salerno, Giardino della Minerva\nVietri Sul Mare: Corso Umberto I, cerámicas, Iglesia San Giovanni\nTarde: Ferry Salerno → Atrani · Check-in',pendiente:'Ferry Salerno-Amalfi · Reservar con anticipación',locked:true,places:['Duomo di Salerno','Vietri sul Mare','Atrani, Amalfi Coast']},
+  {fecha:'28-08',dia:'Vie',ciudad:'Amalfi / Atrani',seccion:'Amalfi',checkin:'-',transport:'A pie',actividades:'Mañana: Amalfi — Piazza Duomo, Duomo di Sant\'Andrea, Chiostro del Paradiso, Piazza dei Dogi, Via Lorenzo d\'Amalfi, Antico Arsenale\nTarde: playa en Amalfi + playa en Atrani',pendiente:'',locked:false,places:['Duomo di Amalfi','Chiostro del Paradiso, Amalfi','Atrani Beach','Antico Arsenale, Amalfi']},
+  {fecha:'29-08',dia:'Sáb',ciudad:'Minori / Maiori',seccion:'Amalfi',checkin:'-',transport:'Bus SITA o barco Atrani → Minori · Caminata Minori → Maiori · Bus/barco vuelta',actividades:'Mañana: Minori — centro, Basilica di Santa Trofimena, Villa Romana di Minori\nMediodía: Sentiero dei Limoni (caminata limones)\nTarde: Maiori — playa',pendiente:'',locked:false,places:['Basilica di Santa Trofimena, Minori','Villa Romana di Minori','Sentiero dei Limoni','Maiori Beach']},
+  {fecha:'30-08',dia:'Dom',ciudad:'Ravello / Amalfi',seccion:'Amalfi',checkin:'-',transport:'Bus SITA Atrani → Ravello',actividades:'Mañana: Ravello — Villa Rufolo, Villa Cimbrone, Terrazza dell\'Infinito',pendiente:'Villa Cimbrone: ver precios',locked:false,places:['Villa Rufolo, Ravello','Villa Cimbrone, Ravello','Terrazza dell\'Infinito, Ravello']},
+  {fecha:'31-08',dia:'Lun',ciudad:'Positano',seccion:'Positano',checkin:'3pm',transport:'Ferry Amalfi → Positano · Horarios: 08:50 / 09:20 / 10:30 / 11:30 / 12:00',actividades:'Mañana: viaje\nTarde: Check-in\nPositano: Marina Grande, Iglesia de Santa Maria Assunta, Piazza dei Mulini, Via dei Mulini, callecitas y miradores, Playa Fornillo',pendiente:'Ferry Amalfi→Positano · Reservar',locked:true,places:['Positano Beach','Chiesa di Santa Maria Assunta, Positano','Piazza dei Mulini, Positano','Spiaggia Fornillo, Positano']},
+  {fecha:'01-09',dia:'Mar',ciudad:'Capri',seccion:'Positano',checkin:'-',transport:'Ferry Positano → Capri + funicular',actividades:'Mañana: Marina Grande, Piazzetta, Via Camerelle, Jardines de Augusto, Via Krupp, miradores\nTarde: tour en barco alrededor de la isla',pendiente:'Ferry Positano↔Capri · Reservar',locked:false,places:['Piazzetta di Capri','Giardini di Augusto, Capri','Via Krupp, Capri','Marina Grande, Capri']},
+  {fecha:'02-09',dia:'Mié',ciudad:'Sorrento',seccion:'Positano',checkin:'-',transport:'Colectivo SITA',actividades:'Sorrento: Piazza Tasso, Vallone dei Mulini, Corso Italia, Via San Cesareo, Catedral, Villa Comunale\nTarde: Marina Grande, recorrer zona costera, shopping',pendiente:'',locked:false,places:['Piazza Tasso, Sorrento','Vallone dei Mulini, Sorrento','Marina Grande, Sorrento']},
+  {fecha:'03-09',dia:'Jue',ciudad:'Positano / Nocelle / Praiano',seccion:'Positano',checkin:'-',transport:'-',actividades:'Plan A: Caminata de los Dioses → Nocelle\nPlan B: Praiano — Marina di Praia, Chiesa di San Luca, miradores, Fiordo di Furore\nPlan C: Positano o repetir playa',pendiente:'',locked:false,places:['Sentiero degli Dei, Positano','Fiordo di Furore','Marina di Praia, Praiano']},
+  {fecha:'04-09',dia:'Vie',ciudad:'Roma',seccion:'Roma',checkin:'3pm',transport:'Barco Positano→Salerno 10:00–10:48hs · Tren Salerno→Roma 12:50–14:25hs',actividades:'Tarde: Villa Borghese, Terrazza del Pincio, Piazza del Popolo, Via del Babuino, Piazza di Spagna, Fontana di Trevi, Piazza Navona',pendiente:'Tren Salerno→Roma confirmado · Codice: 2884308446 y 2884308447',locked:true,places:['Fontana di Trevi, Roma','Piazza di Spagna, Roma','Pantheon, Roma','Piazza Navona, Roma']},
+  {fecha:'05-09',dia:'Sáb',ciudad:'Roma',seccion:'Roma',checkin:'-',transport:'-',actividades:'Mañana: Basílica de San Pedro, Paseo/Shopping en Prati (Via Cola di Rienzo, Piazza Cola di Rienzo, Via Ottaviano)\nTarde: Piazza del Popolo, Via del Corso, Piazza di Spagna',pendiente:'',locked:false,places:['Basilica di San Pietro, Roma','Piazza San Pietro, Roma','Prati, Roma','Via del Corso, Roma']},
+  {fecha:'06-09',dia:'Dom',ciudad:'Roma',seccion:'Roma',checkin:'-',transport:'-',actividades:'Mañana: Coliseo, Arco de Constantino, Via dei Fori Imperiali, Campidoglio, Monti, Santa Maria Maggiore\nTarde: barrio Celio y Trastevere, Isola Tiberina, Ponte Cestio, Santa Cecilia',pendiente:'',locked:false,places:['Colosseo, Roma','Foro Romano, Roma','Campidoglio, Roma','Trastevere, Roma','Isola Tiberina, Roma']},
+  {fecha:'07-09',dia:'Lun',ciudad:'Vuelo a Buenos Aires',seccion:'Vuelo',checkin:'22:30hs',transport:'ITA Airways · Duración 14hs · Llegada 07:30am (+1)',actividades:'Mañana: Últimas compras — Via del Corso, Via Frattina, Via del Babuino, Piazza di Spagna\nTarde: últimos pendientes\n17/18hs salir al aeropuerto\nNoche: vuelo de vuelta · Mochila + Carry On',pendiente:'',locked:true,places:['Via del Corso, Roma','Piazza di Spagna, Roma','Aeroporto di Roma Fiumicino']},
+];
+
+const CITIES = {
+  'Vuelo': null,
+  'Palermo': '#1A1A2E',
+  'Agrigento': '#1A1A2E',
+  'Catania': '#1A1A2E',
+  'Amalfi': '#1A1A2E',
+  'Positano': '#1A1A2E',
+  'Roma': '#1A1A2E',
+};
+
+// ── STATE ──
+let days = [];
+let currentIdx = 0;
+let swapFromIdx = null;
+let swapToIdx = null;
+let mapsLoaded = false;
+let dayMaps = {};
+let checkedDays = {};
+
+// ── FIREBASE ──
+async function fbGet(path) {
+  const r = await fetch(`${FIREBASE_URL}/${path}.json`);
+  return r.json();
+}
+async function fbSet(path, data) {
+  await fetch(`${FIREBASE_URL}/${path}.json`, {method:'PUT', body:JSON.stringify(data)});
+}
+async function fbUpdate(path, data) {
+  await fetch(`${FIREBASE_URL}/${path}.json`, {method:'PATCH', body:JSON.stringify(data)});
+}
+
+function setSyncStatus(ok) {
+  document.getElementById('sync-dot').className = 'sync-dot '+(ok?'ok':'err');
+  document.getElementById('sync-label').textContent = ok ? 'sync' : 'offline';
+}
+
+// Firebase long-polling for real-time sync
+function startSync() {
+  const evtSource = new EventSource(`${FIREBASE_URL}/italia.json?accept=text/event-stream`);
+  evtSource.addEventListener('put', e => {
+    const data = JSON.parse(e.data);
+    if (data.data) {
+      if (data.data.days) { days = data.data.days; renderAllCards(); }
+      if (data.data.checkedDays) { checkedDays = data.data.checkedDays; updateCheckedUI(); }
+    }
+    setSyncStatus(true);
+  });
+  evtSource.onerror = () => setSyncStatus(false);
+}
+
+async function seedIfEmpty() {
+  const existing = await fbGet('italia/days');
+  if (!existing) {
+    await fbSet('italia/days', DEFAULT_DAYS);
+    await fbSet('italia/checkedDays', {});
   }
+  const cd = await fbGet('italia/checkedDays');
+  checkedDays = cd || {};
+}
 
-  function launchSparkles() {
-    const canvas = document.getElementById('sparkle-canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    const W = canvas.width, H = canvas.height;
-    const colors = ['#8B1A1A','#D4847E','#F9D7D4','#ffffff','#c45c5c','#e8a0a0'];
-    const particles = [];
+// ── TODAY ──
+function getTodayIdx() {
+  const today = new Date();
+  const start = new Date(2026, 7, 15); // Aug 15
+  const diff = Math.floor((today - start) / 86400000);
+  if (diff < 0 || diff >= days.length) return 0;
+  return diff;
+}
 
-    for (let i = 0; i < 70; i++) {
-      particles.push({
-        x: W * 0.5 + (Math.random() - 0.5) * W * 0.9,
-        y: H * 0.4 + (Math.random() - 0.5) * H * 0.7,
-        vx: (Math.random() - 0.5) * 0.9,
-        vy: (Math.random() - 0.5) * 0.9,
-        size: 3 + Math.random() * 7,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        alpha: 1,
-        rot: Math.random() * Math.PI * 2,
-        rotV: (Math.random() - 0.5) * 0.18,
-        type: Math.random() > 0.45 ? 'star4' : 'cross',
-        life: 0.004 + Math.random() * 0.004
-      });
-    }
+// ── RENDER ──
+function renderNav() {
+  const nav = document.getElementById('carousel-nav');
+  const todayIdx = getTodayIdx();
+  nav.innerHTML = days.map((d, i) => {
+    const isToday = i === todayIdx;
+    const isActive = i === currentIdx;
+    return `<button class="day-pill ${isActive?'active':''} ${isToday&&!isActive?'today':''}"
+      onclick="goToDay(${i})" aria-label="${d.fecha}">
+      ${d.fecha}
+    </button>`;
+  }).join('');
+  // Scroll active pill into view
+  const pills = nav.querySelectorAll('.day-pill');
+  if (pills[currentIdx]) {
+    pills[currentIdx].scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
+  }
+}
 
-    function drawStar4(ctx, x, y, r, color, alpha) {
-      ctx.save();
-      ctx.globalAlpha = alpha;
-      ctx.strokeStyle = color;
-      ctx.lineWidth = 1.4;
-      ctx.beginPath();
-      for (let i = 0; i < 8; i++) {
-        const angle = (i * Math.PI) / 4;
-        const len = i % 2 === 0 ? r : r * 0.35;
-        const px = x + Math.cos(angle) * len;
-        const py = y + Math.sin(angle) * len;
-        i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+function renderAllCards() {
+  const track = document.getElementById('swipe-track');
+  track.innerHTML = days.map((d, i) => renderDayCard(d, i)).join('');
+  updateSwipePosition(false);
+  renderNav();
+}
+
+function renderDayCard(d, i) {
+  const todayIdx = getTodayIdx();
+  const isToday = i === todayIdx;
+  const isDone = checkedDays && checkedDays[i];
+  const [day, month] = d.fecha.split('-');
+  const months = ['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const monthName = months[parseInt(month)] || '';
+
+  const activities = (d.actividades||'').split('\n').filter(a=>a.trim());
+  const hasTransport = d.transport && d.transport !== '-' && d.transport !== '';
+  const hasPendiente = d.pendiente && d.pendiente.trim();
+
+  // Build places list for map
+  const places = d.places || [];
+
+  // Swap button only for non-locked days with siblings in same section
+  const siblings = days.filter((dd,ii) => dd.seccion === d.seccion && !dd.locked && ii !== i);
+  const showSwap = !d.locked && siblings.length > 0;
+
+  return `<div class="day-card" id="card-${i}">
+    <div class="day-hero">
+      <div class="day-hero-top">
+        <div>
+          <div class="day-label">${d.seccion}${isToday?`<span class="today-badge">Hoy</span>`:''}</div>
+          <div class="day-title">${d.ciudad}</div>
+        </div>
+        <div class="day-date-badge">
+          <div class="badge-day">${day}</div>
+          <div class="badge-month">${monthName}</div>
+        </div>
+      </div>
+      <div class="day-hero-meta">
+        <div class="day-weekday" style="font-size:14px;font-weight:500;color:var(--gray-500);align-self:center">${d.dia}</div>
+        ${d.checkin && d.checkin!=='-' ? `<span class="meta-chip"><span class="chip-icon">🏠</span> Check-in ${d.checkin}</span>` : ''}
+      </div>
+      <button class="done-btn-hero ${isDone?'done':''}" onclick="toggleDone(${i})">${isDone?'✓ Listo':'Marcar listo'}</button>
+    </div>
+
+    ${hasTransport ? `<div class="day-section">
+      <div class="section-label">Transporte</div>
+      <div class="transport-card">
+        <span class="transport-icon">${getTransportIcon(d.transport)}</span>
+        <div class="transport-text">${d.transport}</div>
+      </div>
+    </div>` : ''}
+
+    ${activities.length ? `<div class="day-section">
+      <div class="section-label">Plan del día</div>
+      <div class="activity-list">
+        ${activities.map(a => `<div class="activity-item">
+          <div class="activity-dot"></div>
+          <div class="activity-text">${a}</div>
+        </div>`).join('')}
+      </div>
+    </div>` : ''}
+
+    ${hasPendiente ? `<div class="day-section">
+      <div class="section-label">📌 Recordar</div>
+      <div style="font-size:13px;color:var(--gray-700);background:var(--gray-100);padding:12px 14px;border-radius:12px;line-height:1.5">${d.pendiente}</div>
+    </div>` : ''}
+
+    ${places.length ? `<div class="map-section">
+      <div class="section-label">Mapa del día</div>
+      <div id="day-map-container-${i}">
+        <div class="day-map" id="map-${i}">
+          <div class="map-loading" id="map-loading-${i}">Cargando mapa...</div>
+        </div>
+        <div class="map-places">
+          ${places.map((p,pi) => `<div class="map-place-item">
+            <div class="map-place-num">${pi+1}</div>
+            <div class="map-place-name">${p.split(',')[0]}</div>
+          </div>`).join('')}
+        </div>
+        <a class="open-maps-btn" href="https://www.google.com/maps/search/${encodeURIComponent(places[0])}" target="_blank">
+          📍 Abrir en Google Maps
+        </a>
+      </div>
+    </div>` : ''}
+
+    <div class="swap-section">
+      ${showSwap ? `<button class="swap-btn" onclick="openSwap(${i})">⇄ Intercambiar con otro día</button>` : ''}
+      <button class="edit-btn-section" onclick="openEdit(${i})">✏️ Editar este día</button>
+    </div>
+  </div>`;
+}
+
+function getTransportIcon(t) {
+  if (!t) return '🚌';
+  const tl = t.toLowerCase();
+  if (tl.includes('avion') || tl.includes('ita') || tl.includes('vuelo')) return '✈️';
+  if (tl.includes('tren') || tl.includes('trenitalia')) return '🚂';
+  if (tl.includes('ferry') || tl.includes('barco') || tl.includes('barca')) return '⛵';
+  if (tl.includes('colectivo') || tl.includes('bus') || tl.includes('sita')) return '🚌';
+  if (tl.includes('taxi')) return '🚕';
+  return '🚌';
+}
+
+// ── MAPS ──
+function loadGoogleMaps() {
+  if (mapsLoaded || window.google) return;
+  mapsLoaded = true;
+  const script = document.createElement('script');
+  script.src = `https://maps.googleapis.com/maps/api/js?key=${MAPS_KEY}&callback=initDayMap&libraries=places`;
+  script.async = true;
+  document.head.appendChild(script);
+}
+
+window.initDayMap = function() {
+  // Called by Google Maps callback — init map for current day
+  initMapForDay(currentIdx);
+};
+
+function initMapForDay(idx) {
+  if (!window.google || !days[idx]) return;
+  const d = days[idx];
+  const places = d.places || [];
+  if (!places.length) return;
+  const mapEl = document.getElementById(`map-${idx}`);
+  const loadingEl = document.getElementById(`map-loading-${idx}`);
+  if (!mapEl || dayMaps[idx]) return;
+
+  const geocoder = new google.maps.Geocoder();
+  const bounds = new google.maps.LatLngBounds();
+  let resolvedCount = 0;
+  const coords = [];
+
+  const mapInstance = new google.maps.Map(mapEl, {
+    zoom: 14,
+    mapTypeControl: false,
+    streetViewControl: false,
+    fullscreenControl: false,
+    zoomControl: true,
+    styles: [
+      {elementType:'geometry',stylers:[{color:'#f5f5f5'}]},
+      {elementType:'labels.text.fill',stylers:[{color:'#333333'}]},
+      {elementType:'labels.text.stroke',stylers:[{color:'#ffffff'}]},
+      {featureType:'road',elementType:'geometry',stylers:[{color:'#ffffff'}]},
+      {featureType:'road',elementType:'geometry.stroke',stylers:[{color:'#e0e0e0'}]},
+      {featureType:'water',elementType:'geometry',stylers:[{color:'#c8d8e8'}]},
+      {featureType:'poi',elementType:'labels',stylers:[{visibility:'off'}]},
+      {featureType:'transit',stylers:[{visibility:'off'}]},
+    ]
+  });
+  dayMaps[idx] = mapInstance;
+  if (loadingEl) loadingEl.style.display = 'none';
+
+  places.forEach((place, pi) => {
+    geocoder.geocode({address: place}, (results, status) => {
+      if (status === 'OK') {
+        const loc = results[0].geometry.location;
+        bounds.extend(loc);
+        coords.push(loc);
+
+        // Custom pin
+        const marker = new google.maps.Marker({
+          position: loc,
+          map: mapInstance,
+          label: { text: String(pi+1), color: '#fff', fontSize: '11px', fontWeight: '700' },
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 14,
+            fillColor: '#0A0A0A',
+            fillOpacity: 1,
+            strokeColor: '#ffffff',
+            strokeWeight: 2,
+          },
+          title: place,
+        });
+
+        const infoWindow = new google.maps.InfoWindow({
+          content: `<div style="font-family:-apple-system,sans-serif;font-size:13px;font-weight:500;padding:2px 0">${place.split(',')[0]}</div>`
+        });
+        marker.addListener('click', () => infoWindow.open(mapInstance, marker));
       }
-      ctx.closePath();
-      ctx.stroke();
-      ctx.restore();
-    }
-
-    function drawCross(ctx, x, y, r, color, alpha) {
-      ctx.save();
-      ctx.globalAlpha = alpha;
-      ctx.strokeStyle = color;
-      ctx.lineWidth = 1.6;
-      ctx.beginPath();
-      ctx.moveTo(x - r, y); ctx.lineTo(x + r, y);
-      ctx.moveTo(x, y - r); ctx.lineTo(x, y + r);
-      ctx.stroke();
-      ctx.restore();
-    }
-
-    let raf;
-    function tick() {
-      ctx.clearRect(0, 0, W, H);
-      let alive = false;
-      for (const p of particles) {
-        p.x += p.vx;
-        p.y += p.vy;
-        p.rot += p.rotV;
-        p.alpha -= p.life;
-        if (p.alpha > 0) {
-          alive = true;
-          ctx.save();
-          ctx.translate(p.x, p.y);
-          ctx.rotate(p.rot);
-          ctx.translate(-p.x, -p.y);
-          if (p.type === 'star4') drawStar4(ctx, p.x, p.y, p.size, p.color, p.alpha);
-          else drawCross(ctx, p.x, p.y, p.size * 0.8, p.color, p.alpha);
-          ctx.restore();
+      resolvedCount++;
+      if (resolvedCount === places.length) {
+        if (coords.length > 1) {
+          mapInstance.fitBounds(bounds, {top:30,right:30,bottom:30,left:30});
+        } else if (coords.length === 1) {
+          mapInstance.setCenter(coords[0]);
+          mapInstance.setZoom(15);
+        }
+        // Update open maps link with multi-place query
+        const mapsLink = document.querySelector(`#card-${idx} .open-maps-btn`);
+        if (mapsLink && coords.length > 0) {
+          const dest = places[places.length-1];
+          const waypoints = places.slice(0,-1).map(p=>`+to:${encodeURIComponent(p)}`).join('');
+          mapsLink.href = `https://www.google.com/maps/dir/${encodeURIComponent(places[0])}${waypoints}/${encodeURIComponent(dest)}`;
         }
       }
-      if (alive) raf = requestAnimationFrame(tick);
-      else ctx.clearRect(0, 0, W, H);
+    });
+  });
+}
+
+// ── NAVIGATION ──
+function goToDay(idx, animate=true) {
+  currentIdx = idx;
+  updateSwipePosition(animate);
+  renderNav();
+  // Init map when navigating to that day
+  if (window.google) {
+    setTimeout(() => initMapForDay(idx), 100);
+  } else {
+    loadGoogleMaps();
+  }
+}
+
+function updateSwipePosition(animate=true) {
+  const track = document.getElementById('swipe-track');
+  if (!track) return;
+  if (!animate) track.style.transition = 'none';
+  track.style.transform = `translateX(-${currentIdx * 100}%)`;
+  if (!animate) setTimeout(() => track.style.transition = '', 50);
+}
+
+// ── SWIPE GESTURES ──
+let touchStartX = 0, touchStartY = 0, isSwiping = false;
+document.addEventListener('touchstart', e => {
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+  isSwiping = false;
+}, {passive:true});
+document.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  const dy = e.changedTouches[0].clientY - touchStartY;
+  if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) {
+    if (dx < 0 && currentIdx < days.length - 1) goToDay(currentIdx + 1);
+    else if (dx > 0 && currentIdx > 0) goToDay(currentIdx - 1);
+  }
+}, {passive:true});
+
+// ── DONE ──
+async function toggleDone(idx) {
+  const newVal = !(checkedDays && checkedDays[idx]);
+  checkedDays = checkedDays || {};
+  checkedDays[idx] = newVal;
+  await fbUpdate('italia/checkedDays', {[idx]: newVal});
+  updateCheckedUI();
+}
+
+function updateCheckedUI() {
+  days.forEach((d, i) => {
+    const btn = document.querySelector(`#card-${i} .done-btn-hero`);
+    if (btn) {
+      const done = checkedDays && checkedDays[i];
+      btn.className = `done-btn-hero ${done?'done':''}`;
+      btn.textContent = done ? '✓ Listo' : 'Marcar listo';
     }
-    tick();
+  });
+}
+
+// ── EDIT ──
+function openEdit(idx) {
+  const d = days[idx];
+  document.getElementById('edit-idx').value = idx;
+  document.getElementById('edit-ciudad').value = d.ciudad||'';
+  document.getElementById('edit-checkin').value = d.checkin||'';
+  document.getElementById('edit-transport').value = d.transport||'';
+  document.getElementById('edit-actividades').value = d.actividades||'';
+  document.getElementById('edit-pendiente').value = d.pendiente||'';
+  openModal('modal-edit');
+}
+
+async function saveEdit() {
+  const idx = +document.getElementById('edit-idx').value;
+  days[idx].ciudad = document.getElementById('edit-ciudad').value;
+  days[idx].checkin = document.getElementById('edit-checkin').value;
+  days[idx].transport = document.getElementById('edit-transport').value;
+  days[idx].actividades = document.getElementById('edit-actividades').value;
+  days[idx].pendiente = document.getElementById('edit-pendiente').value;
+  await fbSet('italia/days', days);
+  closeModal('modal-edit');
+  // Re-render this card
+  const card = document.getElementById(`card-${idx}`);
+  if (card) {
+    const newHTML = renderDayCard(days[idx], idx);
+    const tmp = document.createElement('div');
+    tmp.innerHTML = newHTML;
+    card.replaceWith(tmp.firstElementChild);
+    if (window.google) { dayMaps[idx] = null; setTimeout(()=>initMapForDay(idx),100); }
+  }
+  renderNav();
+  showToast('Día actualizado ✓');
+}
+
+// ── SWAP ──
+function openSwap(idx) {
+  swapFromIdx = idx;
+  swapToIdx = null;
+  const d = days[idx];
+  document.getElementById('swap-title').textContent = `Intercambiar: ${d.fecha} ${d.ciudad.substring(0,20)}`;
+  const siblings = days.map((dd,ii) => ({...dd, idx:ii})).filter(dd => dd.seccion === d.seccion && !dd.locked && dd.idx !== idx);
+  document.getElementById('swap-day-list').innerHTML = siblings.map(s => `
+    <div class="swap-day-item" id="swap-item-${s.idx}" onclick="selectSwapTarget(${s.idx})">
+      <div class="swap-day-date">${s.fecha}</div>
+      <div class="swap-day-name">${s.ciudad}</div>
+      <div class="swap-day-check" id="swap-check-${s.idx}"></div>
+    </div>`).join('');
+  openModal('modal-swap');
+}
+
+function selectSwapTarget(idx) {
+  if (swapToIdx !== null) {
+    document.getElementById(`swap-item-${swapToIdx}`)?.classList.remove('selected');
+  }
+  swapToIdx = idx;
+  document.getElementById(`swap-item-${idx}`)?.classList.add('selected');
+  document.getElementById(`swap-check-${idx}`).textContent = '✓';
+}
+
+async function confirmSwap() {
+  if (swapToIdx === null) { showToast('Elegí un día primero'); return; }
+  const fields = ['ciudad','checkin','transport','actividades','pendiente','places'];
+  fields.forEach(f => {
+    const tmp = days[swapFromIdx][f];
+    days[swapFromIdx][f] = days[swapToIdx][f];
+    days[swapToIdx][f] = tmp;
+  });
+  await fbSet('italia/days', days);
+  closeModal('modal-swap');
+
+  // Re-render both cards
+  [swapFromIdx, swapToIdx].forEach(idx => {
+    const card = document.getElementById(`card-${idx}`);
+    if (card) {
+      const tmp = document.createElement('div');
+      tmp.innerHTML = renderDayCard(days[idx], idx);
+      card.replaceWith(tmp.firstElementChild);
+      dayMaps[idx] = null;
+    }
+  });
+  renderNav();
+  if (window.google) { setTimeout(()=>initMapForDay(currentIdx),100); }
+  showToast('Días intercambiados ✓');
+  swapFromIdx = null; swapToIdx = null;
+}
+
+// ── CALENDAR ──
+const CITY_COLORS = {
+  'Vuelo': '#888888',
+  'Palermo': '#2A6E8A',
+  'Agrigento': '#B8750A',
+  'Catania': '#C53030',
+  'Amalfi': '#2D7A5A',
+  'Positano': '#C8602A',
+  'Roma': '#534AB7',
+};
+
+function openCal() {
+  const todayIdx = getTodayIdx();
+
+  // Build a map: "DD-MM" → {idx, seccion}
+  const tripMap = {};
+  days.forEach((d, i) => { tripMap[d.fecha] = {idx: i, seccion: d.seccion}; });
+
+  // Render August and September 2026
+  const months = [
+    {year: 2026, month: 7, name: 'Agosto 2026'},   // month is 0-indexed
+    {year: 2026, month: 8, name: 'Septiembre 2026'},
+  ];
+  const weekdays = ['D','L','M','M','J','V','S'];
+  const today = new Date();
+
+  let html = '';
+
+  months.forEach(({year, month, name}) => {
+    const firstDay = new Date(year, month, 1).getDay(); // 0=Sun
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    html += `<div class="cal-month">
+      <div class="cal-month-name">${name}</div>
+      <div class="cal-weekdays">${weekdays.map(w=>`<div class="cal-weekday">${w}</div>`).join('')}</div>
+      <div class="cal-grid">`;
+
+    // Empty cells before first day
+    for (let e = 0; e < firstDay; e++) {
+      html += `<div class="cal-cell"></div>`;
+    }
+
+    for (let d = 1; d <= daysInMonth; d++) {
+      const dd = String(d).padStart(2,'0');
+      const mm = String(month + 1).padStart(2,'0');
+      const key = `${dd}-${mm}`;
+      const trip = tripMap[key];
+      const isToday = today.getFullYear()===year && today.getMonth()===month && today.getDate()===d;
+      const isCurrent = trip && trip.idx === currentIdx;
+      const color = trip ? (CITY_COLORS[trip.seccion] || '#333') : null;
+
+      if (trip) {
+        html += `<div class="cal-cell in-trip ${isCurrent?'is-current':''} ${isToday&&!isCurrent?'is-today':''}"
+          onclick="goToDay(${trip.idx});closeCal()">
+          ${d}
+          ${!isCurrent && color ? `<span class="city-dot" style="background:${color}"></span>` : ''}
+        </div>`;
+      } else {
+        html += `<div class="cal-cell ${isToday?'is-today':''}">${d}</div>`;
+      }
+    }
+
+    html += `</div></div>`;
+  });
+
+  // Legend
+  const uniqueSections = [...new Set(days.map(d=>d.seccion))].filter(s=>s!=='Vuelo');
+  html += `<div class="cal-legend">
+    ${uniqueSections.map(s=>`<div class="cal-legend-item">
+      <div class="cal-legend-dot" style="background:${CITY_COLORS[s]||'#333'}"></div>
+      ${s}
+    </div>`).join('')}
+  </div>`;
+
+  document.getElementById('cal-content').innerHTML = html;
+  document.getElementById('cal-overlay').classList.add('open');
+}
+function closeCal() { document.getElementById('cal-overlay').classList.remove('open'); }
+
+// ── MODAL ──
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// ── TOAST ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ── INIT ──
+async function init() {
+  try {
+    await seedIfEmpty();
+    days = await fbGet('italia/days') || DEFAULT_DAYS;
+    const cd = await fbGet('italia/checkedDays');
+    checkedDays = cd || {};
+    setSyncStatus(true);
+  } catch(e) {
+    days = DEFAULT_DAYS;
+    setSyncStatus(false);
   }
 
-  function toggleSpotify(btn) {
-    const embed = document.getElementById('spotify-embed');
-    embed.classList.toggle('open');
-    if (embed.classList.contains('open')) {
-      setTimeout(() => embed.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
-    }
-  }
+  // Go to today or day 0
+  const todayIdx = getTodayIdx();
+  currentIdx = todayIdx;
+
+  renderAllCards();
+
+  // Hide loading, show app
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+
+  // Load maps after render
+  loadGoogleMaps();
+
+  // Start real-time sync
+  try { startSync(); } catch(e) {}
+}
+
+init();
 </script>
 </body>
 </html>
