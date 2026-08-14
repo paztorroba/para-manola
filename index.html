@@ -1,1185 +1,259 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-<title>Italia 2026</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍋</text></svg>">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<style>
-:root {
-  --black: #1A2A2E;
-  --white: #FFFFFF;
-  --bg: #F0F4F6;
-  --bg-dark: #E2EDF0;
-  --teal: #B0D9D9;
-  --teal-dark: #80C0C0;
-  --accent: #FF6740;
-  --accent-dark: #E04E28;
-  --gray-100: #E4EDF0;
-  --gray-200: #D0E0E4;
-  --gray-300: #B0CDD4;
-  --gray-500: #6A9AA8;
-  --gray-700: #2A5A68;
-  --font: -apple-system,'SF Pro Display','Helvetica Neue',sans-serif;
-  --safe-top: env(safe-area-inset-top,0px);
-  --safe-bottom: env(safe-area-inset-bottom,0px);
-  --top-h: 104px;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;overflow:hidden}
-body{font-family:var(--font);background:var(--bg);color:var(--black);-webkit-font-smoothing:antialiased}
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Para Manola ✿</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; font-family: 'Playfair Display', serif; }
 
-/* ── APP ── */
-#app{display:flex;flex-direction:column;height:100vh;height:100dvh}
+    #screen1 {
+      background: #8B1A1A;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 40px 32px;
+      transition: opacity 0.6s ease;
+    }
+    #screen1.fade-out { opacity: 0; pointer-events: none; }
 
-/* ── TOP BAR ── */
-.top-bar{
-  flex-shrink:0;
-  background:var(--teal);
-  border-bottom:none;
-  position:relative;z-index:10;
-  padding-top:calc(var(--safe-top) + 12px);
-}
-.top-bar-row1{display:flex;align-items:center;justify-content:space-between;padding:0 18px 10px}
-.top-title{font-size:20px;font-weight:700;letter-spacing:-0.4px;color:#1E5F6A}
-.top-right{display:flex;align-items:center;gap:8px}
-.sync-pill{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,0.3);border-radius:20px;padding:5px 10px}
-.sync-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.5);transition:background .3s}
-.sync-dot.ok{background:#22C55E}
-.sync-dot.err{background:#EF4444}
-.sync-label{font-size:11px;color:#1E5F6A;opacity:0.8}
-.cal-btn{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.45);color:#1E5F6A;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .s1-flower { font-size: 26px; color: #F9D7D4; margin-bottom: 22px; }
 
-/* ── DAY NAV ROW ── */
-.day-nav-row{display:flex;align-items:center;padding:0 12px 12px;gap:6px;background:var(--teal)}
-.day-nav-pills{flex:1;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;display:flex;gap:6px;padding:2px 0}
-.day-nav-pills::-webkit-scrollbar{display:none}
-.day-pill{flex-shrink:0;padding:6px 13px;border-radius:20px;border:1.5px solid rgba(30,95,106,0.2);background:rgba(255,255,255,0.25);cursor:pointer;font-size:12px;font-weight:500;color:rgba(30,95,106,0.5);transition:all .15s;white-space:nowrap;font-family:var(--font)}
-.day-pill.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
-.day-pill.today{border-color:#1E5F6A;color:#1E5F6A;background:rgba(255,255,255,0.4)}
-.nav-arrow-btn{flex-shrink:0;width:34px;height:34px;border-radius:50%;border:1.5px solid rgba(30,95,106,0.2);background:rgba(255,255,255,0.25);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;color:#1E5F6A}
-.nav-arrow-btn:active{background:rgba(255,255,255,0.2)}
-.nav-arrow-btn:disabled{opacity:0.25;cursor:not-allowed}
-.nav-arrow-btn svg path{stroke:#1E5F6A}
+    .s1-name {
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      font-size: clamp(22px, 5vw, 30px);
+      color: #F9D7D4;
+      opacity: 0.85;
+      margin-bottom: 14px;
+    }
 
-/* ── MAIN ── */
-.main{flex:1;overflow:hidden;position:relative}
-.swipe-container{position:absolute;inset:0;overflow:hidden}
-.swipe-track{display:flex;height:100%;transition:transform .3s cubic-bezier(.4,0,.2,1);will-change:transform}
-.day-card{flex-shrink:0;width:100%;height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:20px;background:var(--bg)}
-/* ── DAY HERO ── */
-.day-hero{padding:16px;margin:12px 12px 0;border-radius:14px;background:var(--white);border:0.5px solid var(--gray-200)}
-.day-hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
-.day-label{font-size:11px;font-weight:600;color:var(--gray-500);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;display:flex;align-items:center;gap:6px}
-.day-title{font-size:24px;font-weight:700;letter-spacing:-.4px;line-height:1.2}
-.day-date-badge{background:var(--accent);color:#fff;border-radius:10px;padding:6px 10px;text-align:center;flex-shrink:0}
-.badge-day{font-size:18px;font-weight:700;line-height:1;color:#fff}
-.badge-month{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,0.75);margin-top:1px}
-.day-hero-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-.meta-chip{display:flex;align-items:center;gap:5px;background:var(--bg-dark);border-radius:20px;padding:5px 10px;font-size:12px;color:var(--gray-700)}
-.today-badge{display:inline-block;background:var(--accent);color:#fff;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;padding:2px 7px;border-radius:20px}
+    .s1-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: clamp(36px, 9vw, 68px);
+      color: #F9D7D4;
+      line-height: 1.08;
+      margin-bottom: 52px;
+      max-width: 640px;
+    }
 
-/* ── SECTIONS AS CARDS ── */
-.day-section{padding:14px 16px;background:var(--white);border-radius:14px;border:0.5px solid var(--gray-200);margin:8px 12px 0}
-.section-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--gray-500);margin-bottom:10px}
+    .s1-btn {
+      background: #F9D7D4;
+      color: #8B1A1A;
+      border: none;
+      border-radius: 50px;
+      padding: 18px 52px;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 18px;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+    .s1-btn:hover { transform: scale(1.04); background: #fff; }
 
-/* ── TRANSPORT ── */
-.transport-card{background:var(--bg-dark);border-radius:12px;padding:12px 14px;display:flex;align-items:flex-start;gap:10px}
-.transport-icon{width:28px;height:28px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
-.transport-icon svg{width:20px;height:20px;fill:var(--gray-700)}
-.transport-body{flex:1}
-.transport-text{font-size:13px;line-height:1.5;color:var(--gray-700)}
-/* Multi-flight */
-.flight-list{display:flex;flex-direction:column;gap:8px}
-.flight-item{background:var(--white);border-radius:10px;padding:10px 12px;border:1px solid var(--gray-200)}
-.flight-num{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--gray-500);margin-bottom:4px}
-.flight-route{font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px}
-.flight-arrow{color:var(--gray-300);font-size:12px}
-.flight-detail{font-size:12px;color:var(--gray-500);margin-top:3px}
+    #screen2 {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      background: #F0CCCA;
+      min-height: 100vh;
+      padding: 44px 20px 60px;
+      position: relative;
+    }
+    #screen2.visible { display: flex; }
 
-/* ── PLAN DEL DÍA ── */
-.plan-section{padding:14px 16px;background:var(--white);border-radius:14px;border:0.5px solid var(--gray-200);margin:8px 12px 0}
-.plan-block{margin-bottom:14px}
-.plan-block:last-child{margin-bottom:0}
-.plan-time-label{font-size:13px;font-weight:700;color:var(--black);margin-bottom:6px;margin-top:2px}
-.plan-items{display:flex;flex-direction:column;gap:5px;padding-left:12px}
-.plan-item{font-size:14px;line-height:1.55;color:var(--gray-700);position:relative;padding-left:12px}
-.plan-item::before{content:'';position:absolute;left:0;top:9px;width:4px;height:4px;border-radius:50%;background:var(--gray-300)}
+    #sparkle-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 999;
+    }
 
-/* ── RECORDAR ── */
-.recordar-card{background:transparent;padding:4px 0;font-size:13px;color:var(--gray-700);line-height:1.5}
-.recordar-item{display:flex;align-items:flex-start;gap:8px;margin-bottom:5px;font-size:13px;color:var(--gray-700)}
-.recordar-item:last-child{margin-bottom:0}
-.recordar-bullet{width:5px;height:5px;border-radius:50%;background:var(--gray-500);flex-shrink:0;margin-top:6px}
+    .main-img {
+      width: 100%;
+      max-width: 440px;
+      border-radius: 18px;
+      display: block;
+      margin-bottom: 32px;
+      box-shadow: 0 8px 32px rgba(139,26,26,0.15);
+      opacity: 0;
+      transform: scale(0.94);
+      transition: opacity 0.7s ease 0.1s, transform 0.7s ease 0.1s;
+    }
+    .main-img.appeared { opacity: 1; transform: scale(1); }
 
-/* ── TICKETS ── */
-.ticket-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--white);border:1px solid var(--gray-200);border-radius:10px;margin-bottom:6px;text-decoration:none;color:inherit}
-.ticket-item:last-child{margin-bottom:0}
-.ticket-icon-wrap{width:32px;height:32px;border-radius:8px;background:var(--bg-dark);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.ticket-icon-wrap svg{width:16px;height:16px;fill:var(--gray-700)}
-.ticket-body{flex:1;min-width:0}
-.ticket-name{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ticket-sub{font-size:11px;color:var(--gray-500)}
-.ticket-arrow{color:var(--gray-300);font-size:14px;flex-shrink:0}
+    .spotify-block { width: 100%; max-width: 440px; }
 
-/* ── MAP ── */
-.map-section{padding:14px 16px;background:var(--white);border-radius:14px;border:0.5px solid var(--gray-200);margin:8px 12px 0}
-.day-map{width:100%;height:220px;border-radius:12px;overflow:hidden;border:1px solid var(--gray-200);background:var(--bg-dark);position:relative;outline:none}
-.day-map *{outline:none}
-.map-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg-dark);border-radius:12px;font-size:13px;color:var(--gray-500)}
-.open-maps-btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;margin-top:10px;padding:12px;background:var(--accent);color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);text-decoration:none}
-.map-places{display:flex;flex-direction:column;gap:5px;margin-top:8px}
-.map-place-item{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--bg-dark);border-radius:9px}
-.map-place-num{width:18px;height:18px;border-radius:50%;background:#fff;border:1.5px solid #FF6740;color:#FF6740;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.map-place-name{font-size:12px;color:var(--gray-700)}
+    .spotify-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      background: #8B1A1A;
+      color: #F9D7D4;
+      border: none;
+      border-radius: 50px;
+      padding: 18px 28px;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+    .spotify-btn:hover { transform: scale(1.02); background: #6e1414; }
+    .spotify-btn svg { flex-shrink: 0; }
 
-/* ── ACTIONS ── */
-.actions-section{padding:12px 12px 20px;display:flex;flex-direction:column;gap:8px;background:var(--bg)}
-.action-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;border-radius:12px;font-size:14px;font-family:var(--font);font-weight:500;cursor:pointer;transition:all .15s}
-.action-btn-outline{border:1.5px solid var(--gray-200);background:var(--white);color:var(--black)}
-.action-btn-outline:active{background:var(--bg-dark)}
-.action-btn-dashed{border:1.5px dashed var(--gray-300);background:var(--white);color:var(--gray-500)}
-.action-btn-dashed:active{background:var(--bg-dark)}
-
-/* ── PRE/POST TRIP ── */
-.special-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center;height:100%;background:var(--bg)}
-.special-screen img{width:160px;height:160px;object-fit:cover;border-radius:20px;margin-bottom:24px}
-.special-title{font-size:26px;font-weight:700;letter-spacing:-.4px;margin-bottom:8px}
-.special-sub{font-size:15px;color:var(--gray-500);line-height:1.5;margin-bottom:24px}
-.countdown-wrap{background:var(--black);color:var(--white);border-radius:16px;padding:20px 28px;margin-bottom:20px}
-.countdown-num{font-size:48px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.5px;line-height:1}
-.countdown-label{font-size:12px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
-.countdown-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;background:var(--accent);border-radius:16px;padding:16px;margin-bottom:20px}
-.countdown-unit{text-align:center}
-.countdown-unit-num{font-size:28px;font-weight:700;color:#fff;line-height:1}
-.countdown-unit-label{font-size:9px;color:rgba(255,255,255,0.75);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
-.airport-card{background:var(--bg-dark);border:none;border-radius:14px;padding:14px 16px;width:100%;text-align:left;margin-top:8px}
-.airport-card-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--gray-500);margin-bottom:6px}
-.airport-card-text{font-size:13px;color:var(--gray-700);line-height:1.5}
-
-/* ── CALENDAR MODAL ── */
-.cal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;align-items:flex-end;justify-content:center}
-.cal-overlay.open{display:flex}
-.cal-sheet{background:var(--bg);border-radius:20px 20px 0 0;width:100%;padding:16px 20px calc(20px + var(--safe-bottom));max-height:70vh;overflow-y:auto}
-/* Desktop: smaller modal */
-@media(min-width:600px){
-  .cal-sheet{max-width:420px;border-radius:20px;margin-bottom:40px;max-height:80vh}
-}
-.cal-handle{width:36px;height:4px;background:var(--gray-300);border-radius:2px;margin:0 auto 14px}
-.cal-title{font-size:17px;font-weight:700;margin-bottom:14px}
-.cal-month{margin-bottom:20px}
-.cal-month-name{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
-.cal-weekdays{display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:3px}
-.cal-weekday{text-align:center;font-size:11px;font-weight:500;color:var(--gray-500);padding-bottom:4px}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
-.cal-cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:50%;font-size:13px;font-weight:500;color:var(--gray-300);position:relative;font-family:var(--font)}
-.cal-cell.in-trip{color:var(--black);cursor:pointer}
-.cal-cell.in-trip:active{background:var(--bg-dark)}
-.cal-cell.is-current{background:var(--accent);color:var(--white)!important}
-.cal-cell.is-today:not(.is-current){border:2px solid var(--black)}
-.city-dot{position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%}
-.cal-legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
-.cal-legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--gray-700)}
-.cal-legend-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-
-/* ── MODALS ── */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:flex-end;justify-content:center}
-.modal-overlay.open{display:flex}
-.modal-sheet{background:var(--bg);border-radius:20px 20px 0 0;width:100%;max-height:90vh;overflow-y:auto;padding:20px 20px calc(20px + var(--safe-bottom))}
-@media(min-width:600px){.modal-sheet{max-width:480px;border-radius:20px;margin-bottom:40px}}
-.modal-handle{width:36px;height:4px;background:var(--gray-300);border-radius:2px;margin:0 auto 16px}
-.modal-title{font-size:20px;font-weight:700;letter-spacing:-.3px;margin-bottom:16px}
-.field{margin-bottom:12px}
-.field label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--gray-500);display:block;margin-bottom:5px}
-.field input,.field select,.field textarea{width:100%;padding:11px 13px;border:1.5px solid var(--gray-200);border-radius:12px;background:var(--white);color:var(--black);font-size:15px;font-family:var(--font);outline:none;-webkit-appearance:none}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:#1E5F6A}
-.field textarea{resize:vertical;min-height:80px;line-height:1.5}
-.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.modal-actions{display:flex;gap:10px;margin-top:16px}
-.btn{padding:13px 18px;border-radius:12px;border:none;cursor:pointer;font-size:15px;font-family:var(--font);font-weight:600;flex:1;transition:all .15s;text-align:center}
-.btn-black{background:#1E5F6A;color:var(--white)}
-.btn-gray{background:var(--bg-dark);color:var(--black)}
-
-/* ── SWAP MODAL ── */
-.swap-intro{font-size:13px;color:var(--gray-500);margin-bottom:14px;line-height:1.5}
-.swap-from-card{background:var(--bg-dark);border-radius:12px;padding:12px 14px;margin-bottom:16px}
-.swap-from-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--gray-500);margin-bottom:4px}
-.swap-from-day{font-size:15px;font-weight:600}
-.swap-divider{display:flex;align-items:center;gap:10px;margin-bottom:14px}
-.swap-divider-line{flex:1;height:1px;background:var(--gray-200)}
-.swap-divider-text{font-size:11px;color:var(--gray-500);font-weight:500;text-transform:uppercase;letter-spacing:.06em}
-.swap-day-list{display:flex;flex-direction:column;gap:7px}
-.swap-day-item{display:flex;align-items:center;gap:12px;padding:13px 14px;border:1.5px solid var(--gray-200);border-radius:12px;cursor:pointer;transition:all .15s;background:var(--white)}
-.swap-day-item.selected{border-color:#1E5F6A;background:var(--bg-dark)}
-.swap-day-date{font-size:12px;font-weight:700;flex-shrink:0;width:40px}
-.swap-day-name{font-size:13px;color:var(--gray-700);flex:1}
-.swap-day-radio{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--gray-300);flex-shrink:0;display:flex;align-items:center;justify-content:center}
-.swap-day-item.selected .swap-day-radio{background:var(--black);border-color:var(--black)}
-.swap-day-radio-inner{width:8px;height:8px;border-radius:50%;background:var(--white)}
-
-/* ── TOAST ── */
-.toast{position:fixed;bottom:calc(20px + var(--safe-bottom));left:50%;transform:translateX(-50%) translateY(16px);background:var(--black);color:var(--white);padding:11px 20px;border-radius:24px;font-size:13px;font-weight:500;opacity:0;transition:all .3s;z-index:300;white-space:nowrap;pointer-events:none}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-/* ── LOADING ── */
-.loading-screen{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:14px}
-.loading-title{font-size:24px;font-weight:700}
-.spinner{width:22px;height:22px;border:2.5px solid var(--gray-200);border-top-color:var(--black);border-radius:50%;animation:spin .7s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* SVG icons */
-.icon-svg{display:inline-block;vertical-align:middle}
-</style>
+    .spotify-embed { width: 100%; margin-top: 14px; display: none; }
+    .spotify-embed.open { display: block; }
+    .spotify-embed iframe { width: 100%; border-radius: 14px; border: none; }
+  </style>
 </head>
 <body>
 
-<div class="loading-screen" id="loading">
-  <div style="font-size:40px">🍋</div>
-  <div class="loading-title">Italia 2026</div>
-  <div class="spinner"></div>
+<div id="screen1">
+  <div class="s1-flower">✿</div>
+  <p class="s1-name">Manola,</p>
+  <h1 class="s1-title">ya casi llega el finde que estabas esperando.</h1>
+  <button class="s1-btn" onclick="openCard()">Abrir 🎀</button>
 </div>
 
-<div id="app" style="display:none">
-  <div class="top-bar">
-    <div class="top-bar-row1">
-      <div>
-        <div class="top-title">🍋 Italia 2026</div>
-      </div>
-      <div class="top-right">
-        <div class="sync-pill">
-          <div class="sync-dot" id="sync-dot"></div>
-          <span class="sync-label" id="sync-label">...</span>
-        </div>
-        <button class="cal-btn" onclick="openCal()" aria-label="Calendario">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="#1E5F6A"><path d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V8h16v13z"/></svg>
-      </button>
-      </div>
-    </div>
-    <div class="day-nav-row">
-      <button class="nav-arrow-btn" id="btn-prev" onclick="goToDay(currentIdx-1)" aria-label="Día anterior">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="#0A0A0A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-      <div class="day-nav-pills" id="carousel-nav"></div>
-      <button class="nav-arrow-btn" id="btn-next" onclick="goToDay(currentIdx+1)" aria-label="Día siguiente">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="#0A0A0A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-    </div>
-  </div>
-
-  <div class="main">
-    <div class="swipe-container" id="swipe-container">
-      <div class="swipe-track" id="swipe-track"></div>
+<div id="screen2">
+  <canvas id="sparkle-canvas"></canvas>
+  <img class="main-img" id="main-img" src="weekend_essentials_manu.png" alt="Weekend Essentials para Manola"/>
+  <div class="spotify-block">
+    <button class="spotify-btn" onclick="toggleSpotify(this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9 18V5l12-2v13" stroke="#F9D7D4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="6" cy="18" r="3" stroke="#F9D7D4" stroke-width="1.8"/>
+        <circle cx="18" cy="16" r="3" stroke="#F9D7D4" stroke-width="1.8"/>
+      </svg>
+      Tocá acá para ir entrando en mood
+    </button>
+    <div class="spotify-embed" id="spotify-embed">
+      <iframe
+        src="https://open.spotify.com/embed/playlist/2lCCBicViLXrNWDG51Hfwb?utm_source=generator&theme=0"
+        height="352"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy">
+      </iframe>
     </div>
   </div>
 </div>
-
-<!-- CALENDAR -->
-<div class="cal-overlay" id="cal-overlay" onclick="if(event.target===this)closeCal()">
-  <div class="cal-sheet">
-    <div class="cal-handle"></div>
-    <div class="cal-title">Ir a un día</div>
-    <div id="cal-content"></div>
-  </div>
-</div>
-
-<!-- MODAL: Edit Day -->
-<div class="modal-overlay" id="modal-edit" onclick="if(event.target===this)closeModal('modal-edit')">
-  <div class="modal-sheet">
-    <div class="modal-handle"></div>
-    <div class="modal-title">Editar día</div>
-    <input type="hidden" id="edit-idx">
-    <div class="field"><label>Destino / Plan principal</label><input type="text" id="edit-ciudad"></div>
-    <div class="field"><label>Hospedaje</label><input type="text" id="edit-hospedaje" placeholder="Nombre o dirección del alojamiento"></div>
-    <div class="field-row">
-      <div class="field"><label>Check-in</label><input type="text" id="edit-checkin" placeholder="3pm"></div>
-      <div class="field"><label>Tipo transporte</label>
-        <select id="edit-transport">
-          <option value="">Sin transporte</option>
-          <option value="plane">Vuelo</option>
-          <option value="train">Tren</option>
-          <option value="ferry">Ferry</option>
-          <option value="bus">Bus</option>
-        </select>
-      </div>
-    </div>
-    <div class="field"><label>Detalle del transporte</label><input type="text" id="edit-transport-text" placeholder="Horarios, códigos, info..."></div>
-    <div class="field"><label>Recordar</label><textarea id="edit-recordar" rows="2" placeholder="Códigos de reserva, avisos..."></textarea></div>
-    <div class="field"><label>Mañana</label><textarea id="edit-manana" rows="3" placeholder="Actividades de la mañana..."></textarea></div>
-    <div class="field"><label>Almuerzo</label><textarea id="edit-almuerzo" rows="2" placeholder="Dónde comer..."></textarea></div>
-    <div class="field"><label>Tarde</label><textarea id="edit-tarde" rows="3" placeholder="Actividades de la tarde..."></textarea></div>
-    <div class="field"><label>Noche</label><textarea id="edit-noche" rows="2" placeholder="Cena, noche..."></textarea></div>
-    <div class="field"><label>Tickets / Links</label><textarea id="edit-tickets" rows="2" placeholder="nombre|link&#10;nombre|link"></textarea></div>
-    <div class="modal-actions">
-      <button class="btn btn-gray" onclick="closeModal('modal-edit')">Cancelar</button>
-      <button class="btn btn-black" onclick="saveEdit()">Guardar</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL: Swap -->
-<div class="modal-overlay" id="modal-swap" onclick="if(event.target===this)closeModal('modal-swap')">
-  <div class="modal-sheet">
-    <div class="modal-handle"></div>
-    <div class="modal-title">Intercambiar días</div>
-    <p class="swap-intro">Elegí otro día de la misma ciudad para intercambiar los planes. Las fechas no cambian, solo el contenido.</p>
-    <div class="swap-from-card">
-      <div class="swap-from-label">Día actual</div>
-      <div class="swap-from-day" id="swap-from-text">—</div>
-    </div>
-    <div class="swap-divider">
-      <div class="swap-divider-line"></div>
-      <div class="swap-divider-text">Intercambiar con</div>
-      <div class="swap-divider-line"></div>
-    </div>
-    <div class="swap-day-list" id="swap-day-list"></div>
-    <div class="modal-actions">
-      <button class="btn btn-gray" onclick="closeModal('modal-swap')">Cancelar</button>
-      <button class="btn btn-black" onclick="confirmSwap()">Intercambiar</button>
-    </div>
-  </div>
-</div>
-
-<div class="toast" id="toast"></div>
 
 <script>
-// ── CONFIG ──
-const FIREBASE_URL = 'https://italia-2026-ac0e8-default-rtdb.firebaseio.com';
-const MAPS_KEY = 'AIzaSyBS03WBEfpKvdvJxl2YwjWmsYQ58xgzRaQ';
+  function openCard() {
+    const s1 = document.getElementById('screen1');
+    const s2 = document.getElementById('screen2');
+    s1.classList.add('fade-out');
+    setTimeout(() => {
+      s1.style.display = 'none';
+      s2.classList.add('visible');
+      window.scrollTo(0, 0);
+      const img = document.getElementById('main-img');
+      requestAnimationFrame(() => requestAnimationFrame(() => img.classList.add('appeared')));
+      setTimeout(launchSparkles, 350);
+    }, 600);
+  }
 
-// ── SVG ICONS ──
-const ICONS = {
-  plane: `<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>`,
-  train: `<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c-4 0-8 .5-8 4v9.5C4 17.43 5.57 19 7.5 19L6 20.5v.5h2l2-2h4l2 2h2v-.5L16.5 19c1.93 0 3.5-1.57 3.5-3.5V6c0-3.5-4-4-8-4zm0 2c3.51 0 5.44.49 5.93 1H6.07C6.56 4.49 8.49 4 12 4zM6 8h5v3H6V8zm11 0v3h-5V8h5zm-9.5 7c-.83 0-1.5-.67-1.5-1.5S6.67 12 7.5 12s1.5.67 1.5 1.5S8.33 15 7.5 15zm9 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>`,
-  ferry: `<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 21c-1.39 0-2.78-.47-4-1.32-2.44 1.71-5.56 1.71-8 0C6.78 20.53 5.39 21 4 21H2v2h2c1.38 0 2.74-.35 4-.99 2.52 1.29 5.48 1.29 8 0 1.26.64 2.62.99 4 .99h2v-2h-2zM3.95 19H4c1.6 0 3.02-.88 4-2 .98 1.12 2.4 2 4 2s3.02-.88 4-2c.98 1.12 2.4 2 4 2h.05l1.89-6.68c.08-.26.06-.54-.06-.78s-.34-.42-.6-.5L20 10.62V6c0-1.1-.9-2-2-2h-3V1H9v3H6c-1.1 0-2 .9-2 2v4.62l-1.29.42c-.26.08-.48.26-.6.5s-.14.52-.06.78L3.95 19zM6 6h12v3.97L12 8 6 9.97V6z"/></svg>`,
-  bus: `<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M4 16c0 .88.39 1.67 1 2.22V20c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h8v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1.78c.61-.55 1-1.34 1-2.22V6c0-3.5-3.58-4-8-4s-8 .5-8 4v10zm3.5 1c-.83 0-1.5-.67-1.5-1.5S6.67 14 7.5 14s1.5.67 1.5 1.5S8.33 17 7.5 17zm9 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm1.5-6H6V6h12v5z"/></svg>`,
-  ticket: `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22 10V6c0-1.11-.9-2-2-2H4c-1.1 0-1.99.89-1.99 2v4c1.1 0 1.99.9 1.99 2s-.89 2-2 2v4c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-4c-1.1 0-2-.9-2-2s.9-2 2-2zm-2-1.46c-1.19.69-2 1.99-2 3.46s.81 2.77 2 3.46V18H4v-2.54c1.19-.69 2-1.99 2-3.46 0-1.48-.8-2.77-2-3.46V6h16v2.54z"/></svg>`,
-  link: `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>`,
-};
+  function launchSparkles() {
+    const canvas = document.getElementById('sparkle-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const W = canvas.width, H = canvas.height;
+    const colors = ['#8B1A1A','#D4847E','#F9D7D4','#ffffff','#c45c5c','#e8a0a0'];
+    const particles = [];
 
-// ── DEFAULT DATA ──
-const DEFAULT_DAYS = [
-  {fecha:'15-08',dia:'Sáb',ciudad:'Buenos Aires → Palermo',seccion:'Vuelo',checkin:null,transport:'plane',
-   flights:[
-     {num:'AZ 683',from:'Buenos Aires (EZE)',to:'Roma (FCO)',dep:'21:20',arr:'18:40+1',info:'Duración ~14hs · Mochila + Carry On'},
-     {num:'AZ 1789',from:'Roma (FCO)',to:'Palermo (PMO)',dep:'21:30',arr:'22:50',info:'Vuelo interno · ~1:20hs'},
-   ],
-   manana:'Salida desde Ezeiza 21:20hs\nLlegar al aeropuerto a las 18:00hs',almuerzo:'',tarde:'',noche:'Vuelo nocturno hacia Roma',
-   recordar:'🛫 Check-in online antes de salir\n✈️ AZ683 EZE→FCO · AZ1789 FCO→PMO',
-   tickets:[{name:'Vuelos ITA Airways',link:''}],
-   locked:true,places:['Aeropuerto Internacional Ezeiza']},
+    for (let i = 0; i < 70; i++) {
+      particles.push({
+        x: W * 0.5 + (Math.random() - 0.5) * W * 0.9,
+        y: H * 0.4 + (Math.random() - 0.5) * H * 0.7,
+        vx: (Math.random() - 0.5) * 0.9,
+        vy: (Math.random() - 0.5) * 0.9,
+        size: 3 + Math.random() * 7,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        alpha: 1,
+        rot: Math.random() * Math.PI * 2,
+        rotV: (Math.random() - 0.5) * 0.18,
+        type: Math.random() > 0.45 ? 'star4' : 'cross',
+        life: 0.004 + Math.random() * 0.004
+      });
+    }
 
-  {fecha:'16-08',dia:'Dom',ciudad:'Palermo',seccion:'Palermo',checkin:'1pm',transport:'bus',hospedaje:'Completar dirección del Airbnb',
-   manana:'10:30 Palazzo dei Normanni y Cappella Palatina\nCentro Histórico: Quattro Canti, Piazza Pretoria, Chiesa della Martorana, Catedral',
-   almuerzo:'Mercato di Ballarò o Mercato del Capo',
-   tarde:'Teatro Massimo · Via Maqueda · recorrer el centro',
-   noche:'Cena en zona Piazza San Domenico o Kalsa',
-   recordar:'',tickets:[],
-   places:['Palazzo dei Normanni, Palermo','Quattro Canti, Palermo','Mercato di Ballarò, Palermo','Teatro Massimo, Palermo']},
-
-  {fecha:'17-08',dia:'Lun',ciudad:'Palermo / Mondello',seccion:'Palermo',checkin:null,transport:'bus',
-   manana:'Ir temprano a Mondello (Línea 806, 30–40 min)',
-   almuerzo:'Almorzar en la playa',
-   tarde:'Playa · Opcional: Riserva Naturale Capo Gallo',
-   noche:'',recordar:'',tickets:[],
-   places:['Mondello Beach, Palermo','Riserva Naturale Capo Gallo, Palermo']},
-
-  {fecha:'18-08',dia:'Mar',ciudad:'Cefalù',seccion:'Palermo',checkin:null,transport:'train',
-   manana:'Tren Palermo → Cefalù (1hs)\nSubir la Roca (~2hs)',
-   almuerzo:'Almuerzo en centro de Cefalù',
-   tarde:'Playa · Cattedrale di Cefalù · Puerto viejo · Lavatoio Medievale · Callejuelas',
-   noche:'',recordar:'',tickets:[],
-   places:['La Rocca, Cefalù','Cattedrale di Cefalù','Lavatoio Medievale, Cefalù','Porto di Cefalù']},
-
-  {fecha:'19-08',dia:'Mié',ciudad:'Palermo / Porticello',seccion:'Palermo',checkin:null,transport:'train',
-   manana:'Tren Palermo → Santa Flavia (20min + 25min a pie)\nPorticello, playa y Trekking Parco Monte Catalfano',
-   almuerzo:'Puerto de Porticello',
-   tarde:'Forum Palermo Shopping (cierra 9pm)',
-   noche:'',recordar:'',tickets:[],
-   places:['Porticello, Santa Flavia','Parco Monte Catalfano, Bagheria']},
-
-  {fecha:'20-08',dia:'Jue',ciudad:'Agrigento',seccion:'Agrigento',checkin:'3pm',transport:'train',
-   manana:'Tren + Bus matutino 10:32–13:55\nLlegada y almuerzo',
-   almuerzo:'Almorzar al llegar',
-   tarde:'Check-in · Stair of the Turks (entradas ahí)\nTransporte: Temple Tour Bus o taxi',
-   noche:'',recordar:'Tren confirmado · Codice: 2877459606 y 2877459607',
-   tickets:[{name:'Tren Palermo→Agrigento',link:''}],
-   locked:true,places:['Scala dei Turchi, Realmonte','Agrigento centro']},
-
-  {fecha:'21-08',dia:'Vie',ciudad:'Agrigento',seccion:'Agrigento',checkin:null,transport:null,
-   manana:'Punta Bianca / recorrer ciudad',
-   almuerzo:'',
-   tarde:'Valle dei Templi (entrada 16:30hs)',
-   noche:'',
-   recordar:'Entrada Valle dei Templi confirmada · Cod: DWD5BDWH',
-   tickets:[{name:'Entrada Valle dei Templi',link:''}],
-   places:['Punta Bianca, Agrigento','Valle dei Templi, Agrigento']},
-
-  {fecha:'22-08',dia:'Sáb',ciudad:'Catania',seccion:'Catania',checkin:'3pm',transport:'train',
-   manana:'Tren + Bus matutino 13:15–17:30hs',
-   almuerzo:'',
-   tarde:'Check-in · Piazza del Duomo, Fontana dell\'Elefante, Via Etnea, Via Crociferi',
-   noche:'',
-   recordar:'Tren confirmado · Codice: 2877460334 y 2877460335',
-   tickets:[{name:'Tren Agrigento→Catania',link:''}],
-   locked:true,places:['Piazza del Duomo, Catania','Via Etnea, Catania','Via Crociferi, Catania']},
-
-  {fecha:'23-08',dia:'Dom',ciudad:'Noto / Siracusa',seccion:'Catania',checkin:null,transport:'train',
-   manana:'2hs Catania→Noto · Porta Reale, Corso Vittorio Emanuele, Cattedrale di San Nicolò, Via Corrado Nicolaci',
-   almuerzo:'Almorzar en Noto',
-   tarde:'35min Noto→Siracusa/Ortigia · Tempio di Apollo, Piazza Archimede, Piazza Duomo, Fonte Aretusa, Castello Maniace\n1:10hs Siracusa→Catania',
-   noche:'',recordar:'',tickets:[],
-   places:['Cattedrale di Noto','Via Corrado Nicolaci, Noto','Tempio di Apollo, Siracusa','Piazza Duomo, Ortigia, Siracusa','Fonte Aretusa, Siracusa']},
-
-  {fecha:'24-08',dia:'Lun',ciudad:'Etna',seccion:'Catania',checkin:null,transport:'bus',
-   manana:'Tour GetYourGuide Etna · Confirmar punto de encuentro',
-   almuerzo:'',
-   tarde:'Regreso del tour',
-   noche:'Descansar y cenar tranqui',
-   recordar:'Tour Etna confirmado · Booking ref: GYG83XAK43M7',
-   tickets:[{name:'Tour Etna GetYourGuide',link:'https://www.getyourguide.com/en-gb/nicolosi-l115237/etna-excursion-from-catania-with-cable-car-4x4-to-3340-mt-t454024'}],
-   places:['Mount Etna, Sicily']},
-
-  {fecha:'25-08',dia:'Mar',ciudad:'Taormina',seccion:'Catania',checkin:null,transport:'train',
-   manana:'Catania → Taormina (1hs)\nPorta Messina, Corso Umberto, Piazza IX Aprile, Torre dell\'Orologio, Piazza Duomo',
-   almuerzo:'Bam Bar',
-   tarde:'Isola Bella\nTeatro Antico (18:30hs)',
-   noche:'',
-   recordar:'Teatro Antico confirmado · #TOL-2026-00028033\n🎂 ¡Cumple de mamá! Acordarse de llamar',
-   tickets:[{name:'Teatro Antico di Taormina',link:''}],
-   places:['Teatro Antico di Taormina','Piazza IX Aprile, Taormina','Isola Bella, Taormina','Bam Bar, Taormina']},
-
-  {fecha:'26-08',dia:'Mié',ciudad:'Catania',seccion:'Catania',checkin:'Tren nocturno',transport:'train',
-   manana:'Mercado La Pescheria (ir temprano), Piazza Duomo, Fontana dell\'Amenano, Via Gisira',
-   almuerzo:'',
-   tarde:'Via Crociferi, Villa Cerami, Piazza Stesicoro\nShopping productos sicilianos (pistacho)',
-   noche:'Cena · Tren nocturno 10:58pm → 6:42am\nPNR WLSQE5 · Vagón 3, asientos 41 y 45',
-   recordar:'Tren nocturno confirmado · PNR WLSQE5\nVagón 3, asientos 41 y 45',
-   tickets:[{name:'Tren nocturno Catania→Salerno',link:''}],
-   locked:true,places:['Mercato della Pescheria, Catania','Piazza Stesicoro, Catania']},
-
-  {fecha:'27-08',dia:'Jue',ciudad:'Salerno → Atrani',seccion:'Amalfi',checkin:'3pm',transport:'ferry',
-   manana:'Llegada a Salerno 6:42am · Bounce/Stasher para equipaje\nRecorrer Salerno: Lungomare Trieste, Via Mercanti, Duomo di Salerno, Giardino della Minerva',
-   almuerzo:'Almorzar en Salerno',
-   tarde:'Vietri Sul Mare: Corso Umberto I, cerámicas\nFerry Salerno → Atrani · Check-in',
-   noche:'',
-   recordar:'Ferry Salerno→Amalfi · Reservar con anticipación\nHorarios: 11:40 / 14:10 / 15:30 / 17:10',
-   tickets:[],locked:true,
-   places:['Duomo di Salerno','Vietri sul Mare','Atrani, Amalfi Coast']},
-
-  {fecha:'28-08',dia:'Vie',ciudad:'Amalfi / Atrani',seccion:'Amalfi',checkin:null,transport:null,
-   manana:'Amalfi: Piazza Duomo, Duomo di Sant\'Andrea, Chiostro del Paradiso, Antico Arsenale',
-   almuerzo:'Almorzar en Amalfi',
-   tarde:'Playa en Amalfi + playa en Atrani',
-   noche:'',recordar:'',tickets:[],
-   places:['Duomo di Amalfi','Chiostro del Paradiso, Amalfi','Atrani Beach','Antico Arsenale, Amalfi']},
-
-  {fecha:'29-08',dia:'Sáb',ciudad:'Minori / Maiori',seccion:'Amalfi',checkin:null,transport:'bus',
-   manana:'Bus/barco Atrani → Minori\nBasilica di Santa Trofimena, Villa Romana di Minori',
-   almuerzo:'',
-   tarde:'Sentiero dei Limoni (caminata limones)\nMaiori — playa',
-   noche:'',recordar:'',tickets:[],
-   places:['Basilica di Santa Trofimena, Minori','Villa Romana di Minori','Sentiero dei Limoni','Maiori Beach']},
-
-  {fecha:'30-08',dia:'Dom',ciudad:'Ravello',seccion:'Amalfi',checkin:null,transport:'bus',
-   manana:'Bus SITA → Ravello\nVilla Rufolo, Villa Cimbrone, Terrazza dell\'Infinito',
-   almuerzo:'Almorzar en Ravello',
-   tarde:'Vuelta a Atrani/Amalfi',
-   noche:'',recordar:'Villa Cimbrone: ver precios de entrada',tickets:[],
-   places:['Villa Rufolo, Ravello','Villa Cimbrone, Ravello','Terrazza dell\'Infinito, Ravello']},
-
-  {fecha:'31-08',dia:'Lun',ciudad:'Positano',seccion:'Positano',checkin:'3pm',transport:'ferry',
-   manana:'Ferry Amalfi → Positano\nHorarios: 08:50 / 09:20 / 10:30 / 11:30',
-   almuerzo:'',
-   tarde:'Check-in · Marina Grande, Iglesia de Santa Maria Assunta, Piazza dei Mulini, callecitas y miradores',
-   noche:'',
-   recordar:'Ferry Amalfi→Positano · Reservar',
-   tickets:[],locked:true,
-   places:['Positano Beach','Chiesa di Santa Maria Assunta, Positano','Piazza dei Mulini, Positano','Spiaggia Fornillo, Positano']},
-
-  {fecha:'01-09',dia:'Mar',ciudad:'Capri',seccion:'Positano',checkin:null,transport:'ferry',
-   manana:'Ferry Positano → Capri + funicular\nMarina Grande, Piazzetta, Via Camerelle',
-   almuerzo:'Almorzar en Capri',
-   tarde:'Jardines de Augusto, Via Krupp, miradores\nTour en barco alrededor de la isla',
-   noche:'Ferry de regreso a Positano',
-   recordar:'Ferry Positano↔Capri · Reservar con anticipación',
-   tickets:[],
-   places:['Piazzetta di Capri','Giardini di Augusto, Capri','Via Krupp, Capri','Marina Grande, Capri']},
-
-  {fecha:'02-09',dia:'Mié',ciudad:'Sorrento',seccion:'Positano',checkin:null,transport:'bus',
-   manana:'Colectivo SITA → Sorrento\nPiazza Tasso, Vallone dei Mulini, Corso Italia, Via San Cesareo, Catedral',
-   almuerzo:'',
-   tarde:'Villa Comunale · Marina Grande · recorrer zona costera · shopping',
-   noche:'',recordar:'',tickets:[],
-   places:['Piazza Tasso, Sorrento','Vallone dei Mulini, Sorrento','Marina Grande, Sorrento']},
-
-  {fecha:'03-09',dia:'Jue',ciudad:'Positano / Nocelle / Praiano',seccion:'Positano',checkin:null,transport:null,
-   manana:'Plan A: Caminata de los Dioses → Nocelle\nPlan B: Praiano — Marina di Praia, Chiesa di San Luca',
-   almuerzo:'',
-   tarde:'Plan B: Fiordo di Furore · miradores\nPlan C: Positano o playa',
-   noche:'',recordar:'',tickets:[],
-   places:['Sentiero degli Dei, Positano','Fiordo di Furore','Marina di Praia, Praiano']},
-
-  {fecha:'04-09',dia:'Vie',ciudad:'Roma',seccion:'Roma',checkin:'3pm',transport:'train',
-   manana:'Barco Positano→Salerno 10:00–10:48hs\nTren Salerno→Roma 12:50–14:25hs',
-   almuerzo:'',
-   tarde:'Check-in · Villa Borghese, Terrazza del Pincio, Piazza del Popolo, Via del Babuino, Piazza di Spagna',
-   noche:'Fontana di Trevi · Piazza Navona',
-   recordar:'Tren Salerno→Roma confirmado · Codice: 2884308446 y 2884308447',
-   tickets:[{name:'Tren Salerno→Roma',link:''}],
-   locked:true,places:['Fontana di Trevi, Roma','Piazza di Spagna, Roma','Piazza Navona, Roma','Villa Borghese, Roma']},
-
-  {fecha:'05-09',dia:'Sáb',ciudad:'Roma',seccion:'Roma',checkin:null,transport:null,
-   manana:'Basílica de San Pedro · Plaza San Pedro\nPaseo por Prati: Via Cola di Rienzo, Piazza Cola di Rienzo',
-   almuerzo:'',
-   tarde:'Piazza del Popolo · Via del Corso · Piazza di Spagna',
-   noche:'',recordar:'',tickets:[],
-   places:['Basilica di San Pietro, Roma','Piazza San Pietro, Roma','Prati, Roma','Via del Corso, Roma']},
-
-  {fecha:'06-09',dia:'Dom',ciudad:'Roma',seccion:'Roma',checkin:null,transport:null,
-   manana:'Coliseo · Arco de Constantino · Via dei Fori Imperiali · Campidoglio · Monti · Santa Maria Maggiore',
-   almuerzo:'',
-   tarde:'Barrio Celio · Trastevere · Isola Tiberina · Ponte Cestio · Santa Cecilia',
-   noche:'',recordar:'',tickets:[],
-   places:['Colosseo, Roma','Foro Romano, Roma','Campidoglio, Roma','Trastevere, Roma','Isola Tiberina, Roma']},
-
-  {fecha:'07-09',dia:'Lun',ciudad:'Vuelo a Buenos Aires',seccion:'Vuelo',checkin:'22:30hs',transport:'plane',
-   flights:[{num:'AZ 682',from:'Roma (FCO)',to:'Buenos Aires (EZE)',dep:'22:30',arr:'07:30+1',info:'Duración ~14hs · Mochila + Carry On'}],
-   manana:'Últimas compras: Via del Corso, Via Frattina, Via del Babuino, Piazza di Spagna',
-   almuerzo:'',
-   tarde:'Últimos pendientes · 17–18hs salir al aeropuerto',
-   noche:'Vuelo de vuelta',
-   recordar:'✈️ AZ682 FCO→EZE · Salida 22:30hs\nSalir al aeropuerto ~17:00hs',
-   tickets:[{name:'Vuelo ITA Airways Roma→BUE',link:''}],
-   locked:true,places:['Aeroporto di Roma Fiumicino','Via del Corso, Roma']},
-];
-
-const CITY_COLORS = {
-  'Vuelo':'#888','Palermo':'#2A6E8A','Agrigento':'#B8750A',
-  'Catania':'#C53030','Amalfi':'#2D7A5A','Positano':'#C8602A','Roma':'#534AB7'
-};
-
-// ── STATE ──
-let days = [];
-let currentIdx = 0;
-let swapFromIdx = null, swapToIdx = null;
-let dayMaps = {};
-let checkedDays = {};
-const DEPARTURE = new Date(2026,7,15,0,50); // Aug 15 00:50
-const RETURN = new Date(2026,8,8,7,30);     // Sep 8 07:30
-
-// ── FIREBASE ──
-async function fbGet(p){const r=await fetch(`${FIREBASE_URL}/${p}.json`);return r.json();}
-async function fbSet(p,d){await fetch(`${FIREBASE_URL}/${p}.json`,{method:'PUT',body:JSON.stringify(d)});}
-async function fbUpdate(p,d){await fetch(`${FIREBASE_URL}/${p}.json`,{method:'PATCH',body:JSON.stringify(d)});}
-
-function setSyncStatus(ok){
-  document.getElementById('sync-dot').className='sync-dot '+(ok?'ok':'err');
-  document.getElementById('sync-label').textContent=ok?'sync':'offline';
-}
-
-function startSync(){
-  try{
-    const es=new EventSource(`${FIREBASE_URL}/italia2.json?accept=text/event-stream`);
-    es.addEventListener('put',e=>{
-      const data=JSON.parse(e.data);
-      if(data.data){
-        if(data.data.days){days=data.data.days;renderAllCards();}
-        if(data.data.checkedDays){checkedDays=data.data.checkedDays;updateCheckedUI();}
+    function drawStar4(ctx, x, y, r, color, alpha) {
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      for (let i = 0; i < 8; i++) {
+        const angle = (i * Math.PI) / 4;
+        const len = i % 2 === 0 ? r : r * 0.35;
+        const px = x + Math.cos(angle) * len;
+        const py = y + Math.sin(angle) * len;
+        i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
       }
-      setSyncStatus(true);
-    });
-    es.onerror=()=>setSyncStatus(false);
-  }catch(e){}
-}
+      ctx.closePath();
+      ctx.stroke();
+      ctx.restore();
+    }
 
-async function seedIfEmpty(){
-  const ex=await fbGet('italia2/days');
-  if(!ex){
-    await fbSet('italia2/days',DEFAULT_DAYS);
-    await fbSet('italia2/checkedDays',{});
-  }
-  const cd=await fbGet('italia2/checkedDays');
-  checkedDays=cd||{};
-}
+    function drawCross(ctx, x, y, r, color, alpha) {
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      ctx.moveTo(x - r, y); ctx.lineTo(x + r, y);
+      ctx.moveTo(x, y - r); ctx.lineTo(x, y + r);
+      ctx.stroke();
+      ctx.restore();
+    }
 
-// ── TODAY / TRIP STATUS ──
-// NOTA: para testear pantallas pre/post viaje, cambiar las fechas abajo
-function getTripStatus(){
-  const now=new Date();
-  const tripStart=new Date(2026,7,15); // 15 ago
-  const tripEnd=new Date(2026,8,7,23,59); // 7 sep
-  if(now<tripStart) return 'before';
-  if(now>tripEnd) return 'after';
-  return 'during';
-}
-
-function getTodayIdx(){
-  const now=new Date();
-  const start=new Date(2026,7,15);
-  const diff=Math.floor((now-start)/86400000);
-  if(diff<0||diff>=days.length) return 0;
-  return diff;
-}
-
-// ── COUNTDOWN ──
-function getCountdown(){
-  const now=new Date();
-  const diff=DEPARTURE-now;
-  if(diff<=0) return null;
-  const d=Math.floor(diff/86400000);
-  const h=Math.floor((diff%86400000)/3600000);
-  const m=Math.floor((diff%3600000)/60000);
-  const s=Math.floor((diff%60000)/1000);
-  return {d,h,m,s};
-}
-
-// ── RENDER ──
-function renderNav(){
-  const nav=document.getElementById('carousel-nav');
-  const todayIdx=getTodayIdx();
-  nav.innerHTML=days.map((d,i)=>{
-    const isToday=i===todayIdx;
-    const isActive=i===currentIdx;
-    return `<button class="day-pill ${isActive?'active':''} ${isToday&&!isActive?'today':''}" onclick="goToDay(${i})">${d.fecha}</button>`;
-  }).join('');
-  const pills=nav.querySelectorAll('.day-pill');
-  if(pills[currentIdx]) pills[currentIdx].scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
-  document.getElementById('btn-prev').disabled=currentIdx<=0;
-  document.getElementById('btn-next').disabled=currentIdx===days.length-1;
-}
-
-// Special screen index: -1 = special card (before/after), 0..n = day cards
-// currentIdx always refers to day card index (0-based)
-// swipe track: [specialCard?, day0, day1, ...]
-
-function getSpecialCard(status){
-  if(status==='before'){
-    return `<div class="day-card" id="special-card">
-      <div class="special-screen" id="countdown-screen">
-        <img src="https://paztorroba.github.io/italia-2026/yippee-cat-kitty.gif" alt="gatito contento" style="width:160px;height:160px;border-radius:20px;object-fit:cover;margin-bottom:16px" onerror="this.style.display='none'">
-        <div class="special-title">¡Falta poco!</div>
-        <div class="special-sub">El viaje arranca el sábado 15 de agosto</div>
-        <div class="countdown-grid" id="countdown-grid">
-          <div class="countdown-unit"><div class="countdown-unit-num" id="cd-d">--</div><div class="countdown-unit-label">días</div></div>
-          <div class="countdown-unit"><div class="countdown-unit-num" id="cd-h">--</div><div class="countdown-unit-label">horas</div></div>
-          <div class="countdown-unit"><div class="countdown-unit-num" id="cd-m">--</div><div class="countdown-unit-label">min</div></div>
-          <div class="countdown-unit"><div class="countdown-unit-num" id="cd-s">--</div><div class="countdown-unit-label">seg</div></div>
-        </div>
-        <div class="airport-card">
-          <div class="airport-card-label">Recordá salir a las 20:00hs del viernes</div>
-          <div class="airport-card-text">Aeropuerto Internacional de Ezeiza (EZE)<br>Vuelo AZ683 · Salida 21:20hs</div>
-        </div>
-      </div>
-    </div>`;
-  }
-  if(status==='after'){
-    return `<div class="day-card" id="special-card">
-      <div class="special-screen">
-        <img src="https://paztorroba.github.io/italia-2026/sad-cat-cat-in-front-of-sea.gif" alt="gatito triste" style="width:160px;height:160px;border-radius:20px;object-fit:cover;margin-bottom:20px" onerror="this.style.display='none'">
-        <div class="special-title">Este viaje ya terminó</div>
-        <div class="special-sub">¿A dónde vamos ahora?</div>
-      </div>
-    </div>`;
-  }
-  return '';
-}
-
-function renderAllCards(){
-  const status=getTripStatus();
-  const track=document.getElementById('swipe-track');
-  const cards=days.map((d,i)=>renderDayCard(d,i)).join('');
-
-  if(status!=='during'){
-    track.innerHTML=getSpecialCard(status)+cards;
-    if(status==='before') startCountdown();
-  } else {
-    track.innerHTML=cards;
-  }
-  updateSwipePosition(false);
-  renderNav();
-}
-
-function renderDayCardsOnly(track){
-  track.innerHTML=days.map((d,i)=>renderDayCard(d,i)).join('');
-  updateSwipePosition(false);
-  renderNav();
-}
-
-function startCountdown(){
-  function tick(){
-    const cd=getCountdown();
-    if(!cd) return;
-    const el_d=document.getElementById('cd-d');
-    const el_h=document.getElementById('cd-h');
-    const el_m=document.getElementById('cd-m');
-    const el_s=document.getElementById('cd-s');
-    if(el_d) el_d.textContent=String(cd.d).padStart(2,'0');
-    if(el_h) el_h.textContent=String(cd.h).padStart(2,'0');
-    if(el_m) el_m.textContent=String(cd.m).padStart(2,'0');
-    if(el_s) el_s.textContent=String(cd.s).padStart(2,'0');
-  }
-  tick();
-  setInterval(tick,1000);
-}
-
-function renderDayCard(d,i){
-  const done=checkedDays&&checkedDays[i];
-  const [day,month]=d.fecha.split('-');
-  const mNames=['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-  const monthName=mNames[parseInt(month)]||'';
-  const todayIdx=getTodayIdx();
-  const isToday=i===todayIdx;
-  const places=d.places||[];
-  const hasSiblings=days.filter((dd,ii)=>dd.seccion===d.seccion&&!dd.locked&&ii!==i).length>0;
-  const showSwap=!d.locked&&hasSiblings;
-
-  // Transport block
-  let transportHTML='';
-  if(d.flights&&d.flights.length){
-    const planeSVG=`<svg width="18" height="18" viewBox="0 0 24 24" fill="#2A5A68"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>`;
-    transportHTML=`<div class="day-section">
-      <div class="section-label">Transporte</div>
-      <div style="display:flex;flex-direction:column;gap:8px">
-        ${d.flights.map(f=>`<div class="ticket-item" style="margin-bottom:0">
-          <div class="ticket-icon-wrap">${planeSVG}</div>
-          <div class="ticket-body">
-            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--gray-500);margin-bottom:3px">${f.num}</div>
-            <div class="ticket-name">${f.from} → ${f.to}</div>
-            <div class="ticket-sub">${f.dep} → ${f.arr} · ${f.info}</div>
-          </div>
-        </div>`).join('')}
-      </div>
-    </div>`;
-  } else if(d.transport){
-    const tPaths={plane:'M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z',train:'M12 2c-4 0-8 .5-8 4v9.5C4 17.43 5.57 19 7.5 19L6 20.5v.5h2l2-2h4l2 2h2v-.5L16.5 19c1.93 0 3.5-1.57 3.5-3.5V6c0-3.5-4-4-8-4zm0 2c3.51 0 5.44.49 5.93 1H6.07C6.56 4.49 8.49 4 12 4zM6 8h5v3H6V8zm11 0v3h-5V8h5zm-9.5 7c-.83 0-1.5-.67-1.5-1.5S6.67 12 7.5 12s1.5.67 1.5 1.5S8.33 15 7.5 15zm9 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z',ferry:'M20 21c-1.39 0-2.78-.47-4-1.32-2.44 1.71-5.56 1.71-8 0C6.78 20.53 5.39 21 4 21H2v2h2c1.38 0 2.74-.35 4-.99 2.52 1.29 5.48 1.29 8 0 1.26.64 2.62.99 4 .99h2v-2h-2zM3.95 19H4c1.6 0 3.02-.88 4-2 .98 1.12 2.4 2 4 2s3.02-.88 4-2c.98 1.12 2.4 2 4 2h.05l1.89-6.68c.08-.26.06-.54-.06-.78s-.34-.42-.6-.5L20 10.62V6c0-1.1-.9-2-2-2h-3V1H9v3H6c-1.1 0-2 .9-2 2v4.62l-1.29.42c-.26.08-.48.26-.6.5s-.14.52-.06.78L3.95 19zM6 6h12v3.97L12 8 6 9.97V6z',bus:'M4 16c0 .88.39 1.67 1 2.22V20c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h8v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1.78c.61-.55 1-1.34 1-2.22V6c0-3.5-3.58-4-8-4s-8 .5-8 4v10zm3.5 1c-.83 0-1.5-.67-1.5-1.5S6.67 14 7.5 14s1.5.67 1.5 1.5S8.33 17 7.5 17zm9 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm1.5-6H6V6h12v5z'};
-    const icon=`<svg width="18" height="18" viewBox="0 0 24 24" fill="#2A5A68"><path d="${tPaths[d.transport]||tPaths.bus}"/></svg>`;
-    const typeLabels={plane:'Vuelo',train:'Tren',ferry:'Ferry',bus:'Bus'};
-    const typeLabel=typeLabels[d.transport]||'Transporte';
-    transportHTML=`<div class="day-section">
-      <div class="section-label">Transporte</div>
-      <div class="ticket-item" style="margin-bottom:0">
-        <div class="ticket-icon-wrap">${icon}</div>
-        <div class="ticket-body">
-          <div class="ticket-name">${typeLabel}</div>
-          ${d.transport_text?`<div class="ticket-sub">${d.transport_text}</div>`:`<div class="ticket-sub" style="color:var(--gray-500)">Agregar detalles al editar</div>`}
-        </div>
-      </div>
-    </div>`;
-  }
-
-  // Recordar block
-  const checkinLine=d.checkin?`Check-in: ${d.checkin}`:'';
-  const recordarRaw=(d.recordar||'').trim();
-  const recordarFull=[checkinLine,recordarRaw].filter(Boolean).join('\n');
-  const recordar=recordarFull.trim();
-  let recordarHTML='';
-  if(recordar){
-    const items=recordar.split('\n').filter(r=>r.trim());
-    recordarHTML=`<div class="day-section">
-      <div class="section-label">Recordar</div>
-      ${items.map(item=>`<div class="recordar-item">
-        <div class="recordar-bullet"></div>
-        <span>${item}</span>
-      </div>`).join('')}
-    </div>`;
-  }
-
-  // Plan del día
-  const timeBlocks=[
-    {key:'manana',label:'Mañana'},
-    {key:'almuerzo',label:'Almuerzo'},
-    {key:'tarde',label:'Tarde'},
-    {key:'noche',label:'Noche'},
-  ];
-  const planBlocks=timeBlocks.filter(b=>(d[b.key]||'').trim()).map(b=>{
-    const items=(d[b.key]||'').split('\n').filter(x=>x.trim());
-    return `<div class="plan-block">
-      <div class="plan-time-label">${b.label}</div>
-      <div class="plan-items">
-        ${items.map(item=>`<div class="plan-item">${item}</div>`).join('')}
-      </div>
-    </div>`;
-  }).join('');
-
-  let planHTML='';
-  if(planBlocks){
-    planHTML=`<div class="plan-section">
-      <div class="section-label">Plan del día</div>
-      ${planBlocks}
-    </div>`;
-  }
-
-  // Tickets
-  const tickets=d.tickets||[];
-  let ticketsHTML='';
-  if(tickets.length){
-    ticketsHTML=`<div class="day-section">
-      <div class="section-label">Tickets y reservas</div>
-      ${tickets.map(t=>`<a class="ticket-item" href="${t.link||'#'}" target="${t.link?'_blank':'_self'}">
-        <div class="ticket-icon-wrap">${ICONS.ticket}</div>
-        <div class="ticket-body">
-          <div class="ticket-name">${t.name}</div>
-          ${t.link?`<div class="ticket-sub">Ver reserva →</div>`:`<div class="ticket-sub" style="color:var(--gray-300)">Sin link aún</div>`}
-        </div>
-        ${t.link?`<span class="ticket-arrow">${ICONS.link}</span>`:''}
-      </a>`).join('')}
-    </div>`;
-  }
-
-  // Map
-  let mapHTML='';
-  if(places.length){
-    mapHTML=`<div class="map-section">
-      <div class="section-label">Mapa del día</div>
-      <div class="day-map" id="map-${i}">
-        <div class="map-loading" id="map-loading-${i}">Cargando mapa...</div>
-      </div>
-      <div class="map-places">
-        ${places.map((p,pi)=>`<div class="map-place-item">
-          <div class="map-place-num">${pi+1}</div>
-          <div class="map-place-name">${p.split(',')[0]}</div>
-        </div>`).join('')}
-      </div>
-      <a class="open-maps-btn" href="https://www.google.com/maps/search/${encodeURIComponent(places[0])}" target="_blank">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-        Abrir en Google Maps
-      </a>
-    </div>`;
-  }
-
-  return `<div class="day-card" id="card-${i}">
-    <div class="day-hero" style="${done?'opacity:0.6':''}">
-      <div class="day-hero-top">
-        <div style="flex:1;min-width:0">
-          <div class="day-label">
-            ${d.seccion}
-            ${isToday?`<span class="today-badge">Hoy</span>`:''}
-          </div>
-          <div class="day-title">${d.ciudad}</div>
-          ${d.hospedaje?`<div style="margin-top:8px"><a href="https://www.google.com/maps/search/${encodeURIComponent(d.hospedaje)}" target="_blank" class="meta-chip" style="text-decoration:none;display:inline-flex"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;margin-right:4px"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>${d.hospedaje}</a></div>`:''}
-        </div>
-        <div style="flex-shrink:0">
-          <div class="day-date-badge">
-            <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,0.8);margin-bottom:2px">${d.dia}</div>
-            <div class="badge-day">${day}</div>
-            <div class="badge-month">${monthName}</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    ${recordarHTML}
-    ${transportHTML}
-    ${planHTML}
-    ${ticketsHTML}
-    ${mapHTML}
-    <div class="actions-section">
-      ${showSwap?`<button class="action-btn action-btn-dashed" onclick="openSwap(${i})">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M6.99 11L3 15l3.99 4v-3H14v-2H6.99v-3zM21 9l-3.99-4v3H10v2h7.01v3L21 9z"/></svg>
-        Intercambiar con otro día
-      </button>`:''}
-      <button class="action-btn action-btn-outline" onclick="openEdit(${i})">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
-        Editar este día
-      </button>
-    </div>
-  </div>`;
-}
-
-// ── NAVIGATION ──
-function goToDay(idx){
-  if(idx<0||idx>=days.length) return;
-  currentIdx=idx;
-  updateSwipePosition(true);
-  renderNav();
-  if(window.google) setTimeout(()=>initMapForDay(idx),200);
-  else loadGoogleMaps();
-}
-
-function updateSwipePosition(animate){
-  const track=document.getElementById('swipe-track');
-  if(!track) return;
-  const status=getTripStatus();
-  const hasSpecial=status!=='during';
-  // idx=-1 → special card (pos 0), idx=0 → first day card (pos 1 if hasSpecial else 0)
-  const pos=hasSpecial?(currentIdx+1):currentIdx;
-  if(!animate) track.style.transition='none';
-  track.style.transform=`translateX(-${Math.max(0,pos)*100}%)`;
-  if(!animate) setTimeout(()=>track.style.transition='',50);
-}
-
-function goToDay(idx){
-  if(idx<0||idx>=days.length) return;
-  currentIdx=idx;
-  updateSwipePosition(true);
-  renderNav();
-  if(window.google) setTimeout(()=>initMapForDay(idx),200);
-  else loadGoogleMaps();
-}
-function loadGoogleMaps(){
-  if(window._mapsLoading||window.google) return;
-  window._mapsLoading=true;
-  const s=document.createElement('script');
-  s.src=`https://maps.googleapis.com/maps/api/js?key=${MAPS_KEY}&callback=onMapsReady&libraries=places`;
-  s.async=true;
-  document.head.appendChild(s);
-}
-
-window.onMapsReady=function(){
-  window._mapsLoading=false;
-  initMapForDay(currentIdx);
-};
-
-function initMapForDay(idx){
-  if(!window.google||!days[idx]||dayMaps[idx]) return;
-  const d=days[idx];
-  const places=d.places||[];
-  if(!places.length) return;
-  const mapEl=document.getElementById(`map-${idx}`);
-  const loadEl=document.getElementById(`map-loading-${idx}`);
-  if(!mapEl) return;
-
-  const map=new google.maps.Map(mapEl,{
-    zoom:14,mapTypeControl:false,streetViewControl:false,
-    fullscreenControl:false,zoomControl:true,
-    gestureHandling:'greedy',
-    clickableIcons:false,
-  });
-  dayMaps[idx]=map;
-  if(loadEl) loadEl.style.display='none';
-
-  const geo=new google.maps.Geocoder();
-  const bounds=new google.maps.LatLngBounds();
-  let done=0;
-  const coords=[];
-
-  places.forEach((place,pi)=>{
-    geo.geocode({address:place},(res,status)=>{
-      if(status==='OK'){
-        const loc=res[0].geometry.location;
-        bounds.extend(loc);
-        coords.push(loc);
-        const marker = new google.maps.Marker({
-          position:loc,map,
-          label:{text:String(pi+1),color:'#FF6740',fontSize:'11px',fontWeight:'700'},
-          icon:{path:google.maps.SymbolPath.CIRCLE,scale:13,fillColor:'#ffffff',fillOpacity:1,strokeColor:'#FF6740',strokeWeight:2.5},
-          title:place,
-        });
-        const infoWindow = new google.maps.InfoWindow({
-          content:`<div style="font-family:-apple-system,sans-serif;font-size:13px;font-weight:600;color:#1A2A2E;padding:2px 4px;max-width:160px">${place.split(',')[0]}</div>`
-        });
-        marker.addListener('click',()=>{ infoWindow.open(map,marker); });
-      }
-      done++;
-      if(done===places.length){
-        if(coords.length>1) map.fitBounds(bounds,{top:30,right:30,bottom:30,left:30});
-        else if(coords.length===1){map.setCenter(coords[0]);map.setZoom(15);}
-        // Update open maps link
-        const btn=document.querySelector(`#card-${idx} .open-maps-btn`);
-        if(btn&&places.length>0){
-          if(places.length===1){
-            btn.href=`https://www.google.com/maps/search/${encodeURIComponent(places[0])}`;
-          } else {
-            const dest=places[places.length-1];
-            const wps=places.slice(0,-1).map(p=>`+to:${encodeURIComponent(p)}`).join('');
-            btn.href=`https://www.google.com/maps/dir/${encodeURIComponent(places[0])}${wps}/${encodeURIComponent(dest)}`;
-          }
+    let raf;
+    function tick() {
+      ctx.clearRect(0, 0, W, H);
+      let alive = false;
+      for (const p of particles) {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rot += p.rotV;
+        p.alpha -= p.life;
+        if (p.alpha > 0) {
+          alive = true;
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rot);
+          ctx.translate(-p.x, -p.y);
+          if (p.type === 'star4') drawStar4(ctx, p.x, p.y, p.size, p.color, p.alpha);
+          else drawCross(ctx, p.x, p.y, p.size * 0.8, p.color, p.alpha);
+          ctx.restore();
         }
       }
-    });
-  });
-}
-
-// ── DONE ──
-async function toggleDone(idx){
-  const v=!(checkedDays&&checkedDays[idx]);
-  checkedDays=checkedDays||{};
-  checkedDays[idx]=v;
-  await fbUpdate('italia2/checkedDays',{[idx]:v});
-  updateCheckedUI();
-}
-function updateCheckedUI(){
-  days.forEach((_,i)=>{
-    const btn=document.querySelector(`#card-${i} .done-btn-hero`);
-    if(btn){
-      const done=checkedDays&&checkedDays[i];
-      btn.className=`done-btn-hero ${done?'done':''}`;
-      btn.textContent=done?'✓ Listo':'Marcar listo';
+      if (alive) raf = requestAnimationFrame(tick);
+      else ctx.clearRect(0, 0, W, H);
     }
-  });
-}
-
-// ── EDIT ──
-function openEdit(idx){
-  const d=days[idx];
-  document.getElementById('edit-idx').value=idx;
-  document.getElementById('edit-ciudad').value=d.ciudad||'';
-  document.getElementById('edit-hospedaje').value=d.hospedaje||'';
-  document.getElementById('edit-checkin').value=d.checkin||'';
-  document.getElementById('edit-transport').value=d.transport||'';
-  document.getElementById('edit-transport-text').value=d.transport_text||'';
-  document.getElementById('edit-recordar').value=d.recordar||'';
-  document.getElementById('edit-manana').value=d.manana||'';
-  document.getElementById('edit-almuerzo').value=d.almuerzo||'';
-  document.getElementById('edit-tarde').value=d.tarde||'';
-  document.getElementById('edit-noche').value=d.noche||'';
-  const tks=(d.tickets||[]).map(t=>`${t.name}|${t.link||''}`).join('\n');
-  document.getElementById('edit-tickets').value=tks;
-  openModal('modal-edit');
-}
-
-async function saveEdit(){
-  const idx=+document.getElementById('edit-idx').value;
-  days[idx].ciudad=document.getElementById('edit-ciudad').value;
-  days[idx].hospedaje=document.getElementById('edit-hospedaje').value||null;
-  days[idx].checkin=document.getElementById('edit-checkin').value||null;
-  days[idx].transport=document.getElementById('edit-transport').value||null;
-  days[idx].transport_text=document.getElementById('edit-transport-text').value||'';
-  days[idx].recordar=document.getElementById('edit-recordar').value;
-  days[idx].manana=document.getElementById('edit-manana').value;
-  days[idx].almuerzo=document.getElementById('edit-almuerzo').value;
-  days[idx].tarde=document.getElementById('edit-tarde').value;
-  days[idx].noche=document.getElementById('edit-noche').value;
-  // Parse tickets
-  const tksRaw=document.getElementById('edit-tickets').value;
-  days[idx].tickets=tksRaw.trim()?tksRaw.split('\n').filter(l=>l.trim()).map(l=>{
-    const [name,...rest]=l.split('|');
-    return {name:name.trim(),link:(rest.join('|')||'').trim()};
-  }):[];
-  await fbSet('italia2/days',days);
-  closeModal('modal-edit');
-  // Re-render card
-  const card=document.getElementById(`card-${idx}`);
-  if(card){
-    const tmp=document.createElement('div');
-    tmp.innerHTML=renderDayCard(days[idx],idx);
-    card.replaceWith(tmp.firstElementChild);
-    dayMaps[idx]=null;
-    if(window.google) setTimeout(()=>initMapForDay(idx),100);
+    tick();
   }
-  renderNav();
-  showToast('Día actualizado ✓');
-}
 
-// ── SWAP ──
-function openSwap(idx){
-  swapFromIdx=idx;swapToIdx=null;
-  const d=days[idx];
-  document.getElementById('swap-from-text').textContent=`${d.fecha} · ${d.ciudad}`;
-  const siblings=days.map((dd,ii)=>({...dd,idx:ii})).filter(dd=>dd.seccion===d.seccion&&!dd.locked&&dd.idx!==idx);
-  document.getElementById('swap-day-list').innerHTML=siblings.map(s=>`
-    <div class="swap-day-item" id="swap-item-${s.idx}" onclick="selectSwap(${s.idx})">
-      <div class="swap-day-date">${s.fecha}</div>
-      <div class="swap-day-name">${s.ciudad}</div>
-      <div class="swap-day-radio" id="swap-radio-${s.idx}"><div class="swap-day-radio-inner"></div></div>
-    </div>`).join('');
-  openModal('modal-swap');
-}
-function selectSwap(idx){
-  if(swapToIdx!==null){
-    document.getElementById(`swap-item-${swapToIdx}`)?.classList.remove('selected');
-  }
-  swapToIdx=idx;
-  document.getElementById(`swap-item-${idx}`)?.classList.add('selected');
-}
-async function confirmSwap(){
-  if(swapToIdx===null){showToast('Elegí un día primero');return;}
-  const fields=['ciudad','hospedaje','checkin','transport','transport_text','manana','almuerzo','tarde','noche','recordar','tickets','places','flights'];
-  fields.forEach(f=>{const tmp=days[swapFromIdx][f];days[swapFromIdx][f]=days[swapToIdx][f];days[swapToIdx][f]=tmp;});
-  await fbSet('italia2/days',days);
-  closeModal('modal-swap');
-  [swapFromIdx,swapToIdx].forEach(idx=>{
-    const card=document.getElementById(`card-${idx}`);
-    if(card){
-      const tmp=document.createElement('div');
-      tmp.innerHTML=renderDayCard(days[idx],idx);
-      card.replaceWith(tmp.firstElementChild);
-      dayMaps[idx]=null;
+  function toggleSpotify(btn) {
+    const embed = document.getElementById('spotify-embed');
+    embed.classList.toggle('open');
+    if (embed.classList.contains('open')) {
+      setTimeout(() => embed.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
     }
-  });
-  renderNav();
-  if(window.google) setTimeout(()=>initMapForDay(currentIdx),100);
-  showToast('Días intercambiados ✓');
-  swapFromIdx=null;swapToIdx=null;
-}
-
-// ── CALENDAR ──
-function openCal(){
-  const tripMap={};
-  days.forEach((d,i)=>{tripMap[d.fecha]={idx:i,seccion:d.seccion};});
-  const months=[{year:2026,month:7,name:'Agosto 2026'},{year:2026,month:8,name:'Septiembre 2026'}];
-  const wdays=['D','L','M','M','J','V','S'];
-  const today=new Date();
-  let html='';
-  months.forEach(({year,month,name})=>{
-    const first=new Date(year,month,1).getDay();
-    const dim=new Date(year,month+1,0).getDate();
-    html+=`<div class="cal-month"><div class="cal-month-name">${name}</div>
-      <div class="cal-weekdays">${wdays.map(w=>`<div class="cal-weekday">${w}</div>`).join('')}</div>
-      <div class="cal-grid">`;
-    for(let e=0;e<first;e++) html+=`<div class="cal-cell"></div>`;
-    for(let d=1;d<=dim;d++){
-      const dd=String(d).padStart(2,'0');
-      const mm=String(month+1).padStart(2,'0');
-      const key=`${dd}-${mm}`;
-      const trip=tripMap[key];
-      const isToday=today.getFullYear()===year&&today.getMonth()===month&&today.getDate()===d;
-      const isCurrent=trip&&trip.idx===currentIdx;
-      const color=trip?(CITY_COLORS[trip.seccion]||'#333'):null;
-      if(trip){
-        html+=`<div class="cal-cell in-trip ${isCurrent?'is-current':''} ${isToday&&!isCurrent?'is-today':''}" onclick="goToDay(${trip.idx});closeCal()">
-          ${d}${!isCurrent&&color?`<span class="city-dot" style="background:${color}"></span>`:''}
-        </div>`;
-      } else {
-        html+=`<div class="cal-cell ${isToday?'is-today':''}">${d}</div>`;
-      }
-    }
-    html+=`</div></div>`;
-  });
-  const secs=[...new Set(days.map(d=>d.seccion))].filter(s=>s!=='Vuelo');
-  html+=`<div class="cal-legend">${secs.map(s=>`<div class="cal-legend-item"><div class="cal-legend-dot" style="background:${CITY_COLORS[s]||'#333'}"></div>${s}</div>`).join('')}</div>`;
-  document.getElementById('cal-content').innerHTML=html;
-  document.getElementById('cal-overlay').classList.add('open');
-}
-function closeCal(){document.getElementById('cal-overlay').classList.remove('open');}
-
-// ── MODAL ──
-function openModal(id){document.getElementById(id).classList.add('open');}
-function closeModal(id){document.getElementById(id).classList.remove('open');}
-document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
-
-// ── TOAST ──
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2200);
-}
-
-// ── INIT ──
-async function init(){
-  try{
-    await seedIfEmpty();
-    days=await fbGet('italia2/days')||DEFAULT_DAYS;
-    const cd=await fbGet('italia2/checkedDays');
-    checkedDays=cd||{};
-    setSyncStatus(true);
-  }catch(e){
-    days=DEFAULT_DAYS;
-    setSyncStatus(false);
   }
-  const status=getTripStatus();
-  // currentIdx=-1 means special screen, 0..n means day cards
-  currentIdx=status==='during'?getTodayIdx():-1;
-  renderAllCards();
-  document.getElementById('loading').style.display='none';
-  document.getElementById('app').style.display='flex';
-  loadGoogleMaps();
-  try{startSync();}catch(e){}
-}
-init();
 </script>
 </body>
 </html>
